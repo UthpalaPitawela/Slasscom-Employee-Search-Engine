@@ -1,24 +1,19 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
+import '@aws-amplify/ui-react/styles.css';
+import LoginPage from "./pages/LoginPage";
+// import withSamlAuthentication from './common/withSamlAuthentication ';
+// import SearchPage from "./pages/SearchPage";
+
+// const AuthenticatedSearchPage = withSamlAuthentication(SearchPage);
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Slasscom Employee Search Engine</h1>
+      <LoginPage/>
+      {/* <AuthenticatedSearchPage/> */}
     </div>
   );
 }
