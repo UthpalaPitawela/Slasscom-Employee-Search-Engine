@@ -1,0 +1,8 @@
+{
+    "SITE_URL": "slasscom-emp.auth.us-east-1.amazoncognito.com/oauth2/authorize?client_id=1a15uno5d8u1v7a6kq0v5v1tj4&response_type=token&scope=email+openid+profile&redirect_uri=https%3A%2F%2Fjwt.io",
+    "AUTH_REGION": "ap-southeast-2",
+    "AUTH_DOMAIN": "slasscom-emp-search.auth.us-east-1.amazoncognito.com",
+    "AUTH_CLIENT": "2mn9cvdkn2s1eafkcvfkifuevs",
+    "AUTH_USER_POOL": "us-east-1_F2a4j58hd",
+    "API_BASE_URL": "http://localhost:4000/api"
+  }
