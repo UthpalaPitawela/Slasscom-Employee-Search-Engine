@@ -1,7 +1,7 @@
 {
-    "CALLBACK_URL": "https://jwt.io",
-    "AUTH_REGION": "us-east-1",
-    "AUTH_DOMAIN": "slasscom-emp.auth.us-east-1.amazoncognito.com",
-    "AUTH_CLIENT": "1a15uno5d8u1v7a6kq0v5v1tj4",
-    "AUTH_USER_POOL": "us-east-1_V9ZmIys2t"
+    "CALLBACK_URL": "",
+    "AUTH_REGION": "",
+    "AUTH_DOMAIN": "",
+    "AUTH_CLIENT": "",
+    "AUTH_USER_POOL": ""
   }
