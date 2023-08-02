@@ -13,18 +13,11 @@ export function getAwsConfig() {
           "profile",
           "openid",
         ],
-        redirectSignIn: `${config.SITE_URL}`,
-        redirectSignOut: `${config.SITE_URL}`,
+        redirectSignIn: `${config.CALLBACK_URL}`,
+        redirectSignOut: `${config.CALLBACK_URL}`,
         responseType: "token",
       },
     },
-    // API: {
-    //   endpoints: [
-    //     {
-    //       name: "API",
-    //       endpoint: `${config.API_BASE_URL}`,
-    //     },
-    //   ],
-    // },
+
   };
 }
