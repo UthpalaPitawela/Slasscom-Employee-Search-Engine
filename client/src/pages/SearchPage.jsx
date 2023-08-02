@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import SearchInput from '../components/Search/SearchInput';
 import SearchResultList from '../components/Search/SearchResultList ';
-import {Container} from 'react-bootstrap';
+import {Container, Col, Row} from 'react-bootstrap';
 // import {Row} from 'react-bootstrap'
 
 
@@ -29,18 +29,24 @@ const SearchPage = () => {
   };
 
   return (
-    <Container fluid>
-         {/* <Row> */}
-
-        <SearchInput
+    <Container>
+      <Row></Row>
+      <Row >
+        <Col></Col>
+        <Col><h4>Slasscom Employee Search</h4></Col>
+        <Col></Col>
+      </Row>
+      <Row>
+        <Col sm={4}></Col>
+        <Col sm={8}>  <SearchInput
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onSearch={handleSearch}
         />
-        {isLoading ? <p>Loading...</p> : <SearchResultList results={searchResults} />}
-        {/* </Row> */}
-       </Container> 
-  );
+        {isLoading ? <p>Loading...</p> : <SearchResultList results={searchResults} />}</Col>
+      </Row>
+    </Container>)
+       
 };
 
 export default SearchPage;
