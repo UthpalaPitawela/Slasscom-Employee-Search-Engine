@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import SearchInput from '../components/Search/SearchInput';
 import SearchResultList from '../components/Search/SearchResultList ';
 import {Container} from 'react-bootstrap';
-import {Row} from 'react-bootstrap'
+// import {Row} from 'react-bootstrap'
 
 
 const SearchPage = () => {
@@ -30,7 +30,7 @@ const SearchPage = () => {
 
   return (
     <Container fluid>
-        <Row>
+         {/* <Row> */}
 
         <SearchInput
           value={searchQuery}
@@ -38,8 +38,8 @@ const SearchPage = () => {
           onSearch={handleSearch}
         />
         {isLoading ? <p>Loading...</p> : <SearchResultList results={searchResults} />}
-        </Row>
-        </Container>
+        {/* </Row> */}
+       </Container> 
   );
 };
 

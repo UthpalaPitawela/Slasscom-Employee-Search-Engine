@@ -1,11 +1,25 @@
 import React from 'react';
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 
-const SearchInput = ({ value, onChange, onSearch }) => {
+const SearchInput = () => {
   return (
-    <div>
-      <input type="text" value={value} onChange={onChange} />
-      <button onClick={onSearch}>Search</button>
-    </div>
+    <Container className="mt-5">
+    <Row>
+      <Col lg={5}>
+        <Form className="d-flex">
+          <Form.Control
+            type="search"
+            placeholder="Search"
+            className="me-2"
+            aria-label="Search"
+          />
+          <Button>
+            Search
+          </Button>
+        </Form>
+      </Col>
+    </Row>
+  </Container>
   );
 };
 
