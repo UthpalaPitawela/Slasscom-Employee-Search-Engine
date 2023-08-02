@@ -4,6 +4,7 @@ import   {Amplify, Auth}  from 'aws-amplify'
 import { getAwsConfig } from "./utils/getAwsConfig";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import SearchPage from "./pages/SearchPage";
+import UserPage from "./pages/UserPage";
 
 // import withSamlAuthentication from './common/withSamlAuthentication ';
 // import SearchPage from "./pages/SearchPage";
@@ -32,11 +33,12 @@ function App() {
 
   return (
     <Router>
-    <Routes>
-      <Route path="/search" element={<SearchPage />}>        
-      </Route>
-    </Routes>
-  </Router>
+      <Routes>
+        <Route path="/search" element={<SearchPage />}/>        
+        <Route path="/user/:data" element={<UserPage />}>        
+        </Route>
+      </Routes>
+    </Router>
     );
 }
 
