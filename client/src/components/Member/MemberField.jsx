@@ -1,7 +1,7 @@
 import { SearchResultsTitles } from "../../schema/searchResultsTypes";
 import { Col, Row } from "react-bootstrap";
 
-const UserField = ({resultItem,resultLabel}) => {
+const MemberField = ({resultItem,resultLabel}) => {
     return (
         <Row>
         <Col md={3}></Col>
@@ -15,4 +15,4 @@ const UserField = ({resultItem,resultLabel}) => {
 }
 
 
-export default UserField;
+export default MemberField;
