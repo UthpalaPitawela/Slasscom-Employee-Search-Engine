@@ -2,9 +2,9 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router";
 
 import { Container, Row, Col, Stack, Button } from "react-bootstrap";
-import UserField from "../components/User/UserField";
+import MemberField from "../components/Member/MemberField";
 
-const UserPage = () => {
+const MemberPage = () => {
   const navigate = useNavigate();
   const { data } = useParams();
   // Parse the string back to an object
@@ -24,10 +24,10 @@ const UserPage = () => {
             <h1>{name}</h1>
           </Col>
         </Row>       
-        {Object.keys(memberData).map((key,k) =>{ return <UserField  resultItem={memberData[key]} resultLabel={key} key={k}/>})}
+        {Object.keys(memberData).map((key,k) =>{ return <MemberField  resultItem={memberData[key]} resultLabel={key} key={k}/>})}
       </Stack>
     </Container>
   );
 };
 
-export default UserPage;
+export default MemberPage;
