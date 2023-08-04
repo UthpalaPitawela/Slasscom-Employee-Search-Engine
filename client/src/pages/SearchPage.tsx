@@ -1,13 +1,40 @@
-import { useState } from "react";
+import { useQuery } from '@apollo/client';
 import { Container, Col, Row } from "react-bootstrap";
 import SearchInput from "../components/Search/SearchInput";
 import SearchResultList from "../components/Search/SearchResultList ";
 import SearchCriteria from "../components/Search/SearchCriteria";
+import { SEARCH_MEMBER } from '../graphql/queries/memberSearch';
+import { useState } from "react";
 // import {Row} from 'react-bootstrap'
 
 const SearchPage = () => {
+  const [searchCriteria, setSearchCriteria] = useState("name")
   const [searchQuery, setSearchQuery] = useState("");
 
+  const handleSelectCriteria = (criteria: string) => {
+    setSearchCriteria(criteria)
+  }
+
+  const handleInputChange = (searchTerm: string) => {
+    setSearchQuery(searchTerm)
+  }
+
+  const searchInput = {
+    searchCriteria: searchQuery
+  }
+
+  const { loading, error } = useQuery(SEARCH_MEMBER, {
+  // const { loading, error, data } = useQuery(SEARCH_MEMBER, {
+    variables: {
+      searchInput,
+    },
+
+  })
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  // const { name, designation, currentWorkplace, specialization, professionalInstitutes } = data.searchMember;
   return (
     <Container className="mt-5">
       <Row></Row>
@@ -28,7 +55,7 @@ const SearchPage = () => {
           <Container className="mt-5">
             <Col sm={2}></Col>
             <Col sm={8}>
-             <SearchCriteria/>
+             <SearchCriteria handleSelectCriteria={handleSelectCriteria} searchCriteria={searchCriteria}/>
             </Col>
           </Container>
         </Col>
@@ -41,9 +68,9 @@ const SearchPage = () => {
             <Col sm={8}>
               {" "}
               <SearchInput
-                // value={searchQuery}
+                 searchQuery={searchQuery}
                 // onChange={(e: any) => setSearchQuery(e.target.value)}
-                // onSearch={handleSearch}
+                handleInputChange={handleInputChange}
               />
             </Col>
           </Container>

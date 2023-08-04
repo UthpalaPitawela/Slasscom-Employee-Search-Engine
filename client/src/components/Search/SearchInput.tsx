@@ -7,7 +7,7 @@ import {
   Row,
 } from "react-bootstrap";
 
-const SearchInput = () => {
+const SearchInput = (props: any) => {
   return (
     // <Container className="mt-5">
 
@@ -19,6 +19,8 @@ const SearchInput = () => {
             placeholder="Search"
             className="me-2"
             aria-label="Search"
+            value={props.searchQuery}
+            onChange={()=> props.handleInputChange()}
           />
           <Button variant="primary">Search</Button>
         </Form>
