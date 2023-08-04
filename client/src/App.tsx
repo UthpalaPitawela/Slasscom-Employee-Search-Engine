@@ -34,8 +34,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/search" element={<SearchPage />}/>        
-        <Route path="/user/:data" element={<MemberPage />}>        
+        <Route path="/search" Component={SearchPage}/>    
+        <Route path="/member/:memData"  Component={MemberPage}>
         </Route>
       </Routes>
     </Router>

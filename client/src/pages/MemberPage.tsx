@@ -3,13 +3,15 @@ import { useNavigate } from "react-router";
 
 import { Container, Row, Col, Stack, Button } from "react-bootstrap";
 import MemberField from "../components/Member/MemberField";
+import { MemberData } from "../types/memberDataType";
 
 const MemberPage = () => {
   const navigate = useNavigate();
-  const { data } = useParams();
-  // Parse the string back to an object
-  const {name, ...memberData} = JSON.parse(decodeURIComponent(data));
+  const { memData } = useParams();
 
+  const decodedMemData= memData? JSON.parse(decodeURIComponent(memData)): null;
+  const {name, ...memberData} = decodedMemData || {};
+  console.log("=================", memberData)
   const redirectToSearch = () => {
     navigate("/search");
   };
@@ -24,7 +26,7 @@ const MemberPage = () => {
             <h1>{name}</h1>
           </Col>
         </Row>       
-        {Object.keys(memberData).map((key,k) =>{ return <MemberField  resultItem={memberData[key]} resultLabel={key} key={k}/>})}
+        {Object.keys(memberData).map((key,k) =>{ return <MemberField  resultItem={memberData[key]} resultLabel={key as keyof MemberData} key={k}/>})}
       </Stack>
     </Container>
   );

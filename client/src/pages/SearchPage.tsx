@@ -41,8 +41,8 @@ const SearchPage = () => {
             <Col sm={8}>
               {" "}
               <SearchInput
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                // value={searchQuery}
+                // onChange={(e: any) => setSearchQuery(e.target.value)}
                 // onSearch={handleSearch}
               />
             </Col>
