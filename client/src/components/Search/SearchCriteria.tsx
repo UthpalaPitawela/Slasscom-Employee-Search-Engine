@@ -15,8 +15,8 @@ const SearchCriteria = () => {
         { value: "institute", text: "Institute" },
       ];
     
-      const handleButtonClick = (buttonNumber) => {
-        setActiveButton(buttonNumber);
+      const handleButtonClick = (buttonValue: any) => {
+        setActiveButton(buttonValue);
       };
 
       return (

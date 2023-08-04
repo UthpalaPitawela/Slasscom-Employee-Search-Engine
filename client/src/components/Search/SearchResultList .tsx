@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router";
 import { Table } from "react-bootstrap";
+import { MemberData } from "../../types/memberDataType";
 
 const SearchResultList = () => {
   const navigate = useNavigate();
@@ -11,14 +12,14 @@ const SearchResultList = () => {
       designation: "Senior Software Engineer",
       workplace: "99x",
       personalEmail: "uthpala@gamil.com",
-      personalContactNumber: "+942342341212",
+      personalContactNumber: +942342341212,
       officialEmail: "uthpalap@99x.io",
-    },
+    } ,
   ];
 
-  const redirectUserPage = (userData) => {
-    const user = JSON.stringify(userData);
-    navigate(`/user/${encodeURIComponent(user)}`);
+  const redirectMemberPage = (memberData: MemberData) => {
+    const memData = JSON.stringify(memberData);
+    navigate(`/member/${encodeURIComponent(memData)}`);
   };
   return (
     <Table striped bordered hover responsive>
@@ -34,7 +35,7 @@ const SearchResultList = () => {
       </thead>
       <tbody>
         {results.map((result, index) => (
-          <tr key={index} onClick={() => redirectUserPage(result)}>
+          <tr key={index} onClick={() => redirectMemberPage(result)}>
             <td>{result.name}</td>
             <td>{result.designation}</td>
             <td>{result.workplace}</td>
