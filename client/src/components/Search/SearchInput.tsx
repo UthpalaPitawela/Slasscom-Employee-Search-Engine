@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Button,
   Col,
@@ -19,10 +18,10 @@ const SearchInput = (props: any) => {
             placeholder="Search"
             className="me-2"
             aria-label="Search"
-            value={props.searchQuery}
-            onChange={()=> props.handleInputChange()}
+            // value={searchTerm}
+            onChange={(e)=> props.handleInputChange(e.target.value)}
           />
-          <Button variant="primary">Search</Button>
+          <Button variant="primary" onClick={()=> props.handleSearch()}>Search</Button>
         </Form>
       </Col>
     </Row>

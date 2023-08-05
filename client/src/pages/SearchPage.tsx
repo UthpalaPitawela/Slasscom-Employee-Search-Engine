@@ -1,4 +1,5 @@
-import { useQuery } from '@apollo/client';
+import { useApolloClient} from '@apollo/client'; // Import useApolloClient
+
 import { Container, Col, Row } from "react-bootstrap";
 import SearchInput from "../components/Search/SearchInput";
 import SearchResultList from "../components/Search/SearchResultList ";
@@ -10,29 +11,42 @@ import { useState } from "react";
 const SearchPage = () => {
   const [searchCriteria, setSearchCriteria] = useState("name")
   const [searchQuery, setSearchQuery] = useState("");
+  const client = useApolloClient(); 
 
   const handleSelectCriteria = (criteria: string) => {
     setSearchCriteria(criteria)
+    console.log("searchCriteria",searchCriteria);
+    
   }
 
   const handleInputChange = (searchTerm: string) => {
     setSearchQuery(searchTerm)
   }
 
-  const searchInput = {
-    searchCriteria: searchQuery
-  }
 
-  const { loading, error } = useQuery(SEARCH_MEMBER, {
-  // const { loading, error, data } = useQuery(SEARCH_MEMBER, {
-    variables: {
-      searchInput,
-    },
 
-  })
+    const handleSearch = async () => {
+      try {
+        console.log("searchQuery",searchQuery);
+        console.log("searchCriteria",searchCriteria);
+        
+        const searchInput = {
+          [searchCriteria]: searchQuery
+        }
+        console.log('searchInput', searchInput)
+        
+        const { data } = await client.query({
+          query: SEARCH_MEMBER,
+          variables: { input: searchInput, page: 1, pageSize:10 },
+        });
+        console.log('Data:', data);
+        // Do something with the data, e.g., update state or display results
+      } catch (error) {
+        console.error('Error:', error);
+        // Handle errors gracefully
+      }
+    };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
 
   // const { name, designation, currentWorkplace, specialization, professionalInstitutes } = data.searchMember;
   return (
@@ -71,6 +85,7 @@ const SearchPage = () => {
                  searchQuery={searchQuery}
                 // onChange={(e: any) => setSearchQuery(e.target.value)}
                 handleInputChange={handleInputChange}
+                handleSearch={handleSearch}
               />
             </Col>
           </Container>
