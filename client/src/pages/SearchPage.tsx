@@ -3,10 +3,63 @@ import { Container, Col, Row } from "react-bootstrap";
 import SearchInput from "../components/Search/SearchInput";
 import SearchResultList from "../components/Search/SearchResultList ";
 import SearchCriteria from "../components/Search/SearchCriteria";
+// import { listMembers} from '../graphql/queries'
+import { getAwsConfig } from "../utils/getAwsConfig";
+
+
+import { API, Amplify} from "aws-amplify";
+import * as queries from '../graphql/queries';
+import { GraphQLQuery, GRAPHQL_AUTH_MODE  } from '@aws-amplify/api';
+import { ListMembersQuery, ListMembersQueryVariables } from "../API";
+
+
 // import {Row} from 'react-bootstrap'
+Amplify.configure(getAwsConfig());
 
 const SearchPage = () => {
+  const [searchCriteria, setSearchCriteria] = useState("name")
   const [searchQuery, setSearchQuery] = useState("");
+  const [members,setMembers] = useState();
+
+  const handleSelectCriteria = (criteria: string) => {
+    setSearchCriteria(criteria)
+    console.log("searchCriteria",searchCriteria);
+
+  }
+
+  const handleInputChange = (searchTerm: string) => {
+    setSearchQuery(searchTerm)
+  }
+  const variables: ListMembersQueryVariables = {
+    filter: {
+      name: {
+        eq: "Nimal Perera"
+      }
+    },
+
+  };
+
+  const handleSearch = async () => {
+    try {
+      const memberData = await API.graphql<GraphQLQuery<ListMembersQuery>>(
+        { 
+          query: queries.listMembers,
+          variables: variables,
+          authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
+        }
+        );
+        console.log('memberData', memberData)
+      
+      // const memberData: any= await API.graphql(graphqlOperation({listMembers}))
+      // const members = memberData.data.listMembers.items;
+      setMembers(members)
+
+    }catch (err) { console.log('error fetching members', err) }
+    
+    // catch (err) {
+    //   console.log('error fetching actors') }
+    
+  }
 
   return (
     <Container className="mt-5">
@@ -28,7 +81,7 @@ const SearchPage = () => {
           <Container className="mt-5">
             <Col sm={2}></Col>
             <Col sm={8}>
-             <SearchCriteria/>
+             <SearchCriteria handleSelectCriteria={handleSelectCriteria} searchCriteria={searchCriteria}/>
             </Col>
           </Container>
         </Col>
@@ -41,9 +94,9 @@ const SearchPage = () => {
             <Col sm={8}>
               {" "}
               <SearchInput
-                // value={searchQuery}
-                // onChange={(e: any) => setSearchQuery(e.target.value)}
-                // onSearch={handleSearch}
+                searchQuery={searchQuery}
+                handleInputChange={handleInputChange}
+                handleSearch={handleSearch}
               />
             </Col>
           </Container>
@@ -54,7 +107,7 @@ const SearchPage = () => {
         <Col md={12}>
           <Container className="mt-4">
             <Col sm={12}>
-              <SearchResultList />
+              <SearchResultList members={members} />
             </Col>
           </Container>
         </Col>

@@ -1,12 +1,6 @@
-import { useState } from "react";
-
 import { ButtonToolbar, Button } from "react-bootstrap";
 
-const SearchCriteria = () => {
-
-    const [activeButton, setActiveButton] = useState("name"); // Make the first button active initially
-
-
+const SearchCriteria = (props: any) => {
     const buttons = [
         { value: "name", text: "Name" },
         { value: "specialization", text: "Specialization" },
@@ -15,17 +9,17 @@ const SearchCriteria = () => {
         { value: "institute", text: "Institute" },
       ];
     
-      const handleButtonClick = (buttonValue: any) => {
-        setActiveButton(buttonValue);
+      const handleButtonClick = (buttonValue: string) => {
+        props.handleSelectCriteria(buttonValue);
       };
 
       return (
         <ButtonToolbar className="justify-content-between">
         {buttons.map((button) => (
           <Button
-            key={button.value}
+            key={props.searchCriteria}
             variant={
-              activeButton === button.value ? "primary" : "secondary"
+              props.searchCriteria === button.value ? "primary" : "secondary"
             }
             onClick={() => handleButtonClick(button.value)}
           >

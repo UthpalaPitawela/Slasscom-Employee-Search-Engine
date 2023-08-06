@@ -3,9 +3,9 @@ import { useNavigate } from "react-router";
 import { Table } from "react-bootstrap";
 import { MemberData } from "../../types/memberDataType";
 
-const SearchResultList = () => {
+const SearchResultList = (props: any) => {
   const navigate = useNavigate();
-
+  console.log("props", props)
   const results = [
     {
       name: "Uthpala Isiru Pitawela",

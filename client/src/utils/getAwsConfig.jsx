@@ -15,9 +15,22 @@ export function getAwsConfig() {
         ],
         redirectSignIn: `${config.CALLBACK_URL}`,
         redirectSignOut: `${config.CALLBACK_URL}`,
-        responseType: "token",
+        responseType: "token"
       },
     },
-
+    API: {
+      // endpoints: [
+      //     {
+      //         name: 'MyFunction',
+      //         endpoint: 'https://lambda.eu-west-1.amazonaws.com/2015-03-31/functions/MyFunction/invocations',
+      //         service: 'lambda',
+      //         region: 'eu-east-1',
+      //     },
+      // ],
+      aws_appsync_graphqlEndpoint: 'https://3xr3h3xzcbdtbkuekfxxhlerxa.appsync-api.us-east-1.amazonaws.com/graphql',
+      aws_appsync_region: 'us-east-1',
+      aws_appsync_authenticationType: 'AMAZON_COGNITO_USER_POOLS',
+      aws_appsync_apiKey: 'null',
+  },
   };
 }
