@@ -13,7 +13,7 @@ const SearchResultList = (props: any) => {
   return (
     <Table striped bordered hover responsive>
       <thead>
-        {props && props.members && (
+        {props && props.members && props.members.length &&(
           <tr>
             <th>Name</th>
             <th>Designation</th>

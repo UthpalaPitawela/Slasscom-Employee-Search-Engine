@@ -32,7 +32,7 @@ const SearchPage = () => {
   const variables: ListMembersQueryVariables = {
     filter: {
       [searchCriteria]: {
-        eq: searchQuery 
+        contains: searchQuery 
       }
     },
 
