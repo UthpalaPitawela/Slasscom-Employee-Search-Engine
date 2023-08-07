@@ -10,8 +10,10 @@ const MemberPage = () => {
   const { memData } = useParams();
 
   const decodedMemData= memData? JSON.parse(decodeURIComponent(memData)): null;
-  const {name, ...memberData} = decodedMemData || {};
-  console.log("=================", memberData)
+  const {name ,...memberData} = decodedMemData || {};
+  const selectedMemFields = ['designation', 'currentWorkplace', 'personalEmail','specialization'];
+  const memberObjData = Object.assign({}, ...selectedMemFields.map((memKey: any) => ({ [memKey]: memberData[memKey] })));
+  
   const redirectToSearch = () => {
     navigate("/search");
   };
@@ -23,10 +25,11 @@ const MemberPage = () => {
             <Button onClick={() => redirectToSearch()}>Back to Search </Button>
           </Col>
           <Col>
-            <h1>{name}</h1>
+            <h1>{name }</h1>
+         
           </Col>
         </Row>       
-        {Object.keys(memberData).map((key,k) =>{ return <MemberField  resultItem={memberData[key]} resultLabel={key as keyof MemberData} key={k}/>})}
+        {Object.keys(memberObjData).map((key,k) =>{ return <MemberField  resultItem={memberData[key]} resultLabel={key as keyof MemberData} key={k}/>})}
       </Stack>
     </Container>
   );

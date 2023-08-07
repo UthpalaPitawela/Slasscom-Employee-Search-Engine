@@ -11,7 +11,6 @@ import { API, Amplify} from "aws-amplify";
 import * as queries from '../graphql/queries';
 import { GraphQLQuery, GRAPHQL_AUTH_MODE  } from '@aws-amplify/api';
 import { ListMembersQuery, ListMembersQueryVariables } from "../API";
-import { MemberData } from "../types/memberDataType";
 
 
 // import {Row} from 'react-bootstrap'
@@ -20,7 +19,7 @@ Amplify.configure(getAwsConfig());
 const SearchPage = () => {
   const [searchCriteria, setSearchCriteria] = useState("name")
   const [searchQuery, setSearchQuery] = useState("");
-  const [members,setMembers] = useState<MemberData[]>([]);
+  const [members,setMembers] = useState();
 
   const handleSelectCriteria = (criteria: string) => {
     setSearchCriteria(criteria)
@@ -48,9 +47,9 @@ const SearchPage = () => {
           authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
         }
         );
-        console.log('memberData', memberData)
       if (memberData && memberData.data && memberData.data.listMembers && memberData.data.listMembers.items) {
         const memData: any = memberData.data.listMembers.items
+        console.log('memData', memData)
         setMembers(memData)
 
       }

@@ -23,6 +23,7 @@ export const MemberResultsTitles: MemberResultsTitles = {
     personalEmail:'Personal Email',
     personalContactNumber:'Personal Contact Number',
     officialEmail:'Official Email',
+    specialization: 'Specialization'
 }
 
 
