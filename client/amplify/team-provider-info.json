@@ -1,0 +1,23 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-slasscomemp-dev-124306-authRole",
+      "UnauthRoleArn": "arn:aws:iam::987628774156:role/amplify-slasscomemp-dev-124306-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::987628774156:role/amplify-slasscomemp-dev-124306-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-slasscomemp-dev-124306-deployment",
+      "UnauthRoleName": "amplify-slasscomemp-dev-124306-unauthRole",
+      "StackName": "amplify-slasscomemp-dev-124306",
+      "StackId": "arn:aws:cloudformation:us-east-1:987628774156:stack/amplify-slasscomemp-dev-124306/df90a8a0-303a-11ee-81c6-126254337b5d",
+      "AmplifyAppId": "d38l9npb5i53nu"
+    },
+    "categories": {
+      "auth": {
+        "slasscomemp2f910844": {}
+      },
+      "api": {
+        "slasscomemp": {}
+      }
+    }
+  }
+}

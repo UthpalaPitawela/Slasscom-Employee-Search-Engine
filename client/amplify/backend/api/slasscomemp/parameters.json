@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "slasscomemp",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authslasscomemp2f910844",
+      "Outputs.UserPoolId"
+    ]
+  }
+}
