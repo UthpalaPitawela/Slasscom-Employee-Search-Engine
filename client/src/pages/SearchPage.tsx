@@ -11,6 +11,7 @@ import { API, Amplify} from "aws-amplify";
 import * as queries from '../graphql/queries';
 import { GraphQLQuery, GRAPHQL_AUTH_MODE  } from '@aws-amplify/api';
 import { ListMembersQuery, ListMembersQueryVariables } from "../API";
+import { MemberData } from "../types/memberDataType";
 
 
 // import {Row} from 'react-bootstrap'
@@ -19,11 +20,10 @@ Amplify.configure(getAwsConfig());
 const SearchPage = () => {
   const [searchCriteria, setSearchCriteria] = useState("name")
   const [searchQuery, setSearchQuery] = useState("");
-  const [members,setMembers] = useState();
+  const [members,setMembers] = useState<MemberData[]>([]);
 
   const handleSelectCriteria = (criteria: string) => {
     setSearchCriteria(criteria)
-    console.log("searchCriteria",searchCriteria);
 
   }
 
@@ -32,8 +32,8 @@ const SearchPage = () => {
   }
   const variables: ListMembersQueryVariables = {
     filter: {
-      name: {
-        eq: "Nimal Perera"
+      [searchCriteria]: {
+        eq: searchQuery 
       }
     },
 
@@ -49,16 +49,12 @@ const SearchPage = () => {
         }
         );
         console.log('memberData', memberData)
-      
-      // const memberData: any= await API.graphql(graphqlOperation({listMembers}))
-      // const members = memberData.data.listMembers.items;
-      setMembers(members)
+      if (memberData && memberData.data && memberData.data.listMembers && memberData.data.listMembers.items) {
+        const memData: any = memberData.data.listMembers.items
+        setMembers(memData)
 
+      }
     }catch (err) { console.log('error fetching members', err) }
-    
-    // catch (err) {
-    //   console.log('error fetching actors') }
-    
   }
 
   return (
@@ -107,7 +103,7 @@ const SearchPage = () => {
         <Col md={12}>
           <Container className="mt-4">
             <Col sm={12}>
-              <SearchResultList members={members} />
+              <SearchResultList members={members}  />
             </Col>
           </Container>
         </Col>

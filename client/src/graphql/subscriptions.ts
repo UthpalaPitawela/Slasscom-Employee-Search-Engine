@@ -9,7 +9,6 @@ export const onCreateMember = /* GraphQL */ `
       nic
       name
       personalEmail
-      age
       designation
       currentWorkplace
       specialization
@@ -27,7 +26,6 @@ export const onUpdateMember = /* GraphQL */ `
       nic
       name
       personalEmail
-      age
       designation
       currentWorkplace
       specialization
@@ -45,7 +43,6 @@ export const onDeleteMember = /* GraphQL */ `
       nic
       name
       personalEmail
-      age
       designation
       currentWorkplace
       specialization

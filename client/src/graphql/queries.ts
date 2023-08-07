@@ -9,7 +9,6 @@ export const getMember = /* GraphQL */ `
       nic
       name
       personalEmail
-      age
       designation
       currentWorkplace
       specialization
@@ -32,7 +31,6 @@ export const listMembers = /* GraphQL */ `
         nic
         name
         personalEmail
-        age
         designation
         currentWorkplace
         specialization
