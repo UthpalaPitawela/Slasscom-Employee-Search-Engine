@@ -13,7 +13,7 @@ const SearchResultList = (props: any) => {
   return (
     <Table striped bordered hover responsive>
       <thead>
-        {props && props.members && props.members.length &&(
+        {props && props.searchResults && props.searchResults.length &&(
           <tr>
             <th>Name</th>
             <th>Designation</th>
@@ -27,16 +27,16 @@ const SearchResultList = (props: any) => {
       </thead>
       <tbody>
         {props &&
-          props.members &&
-          props.members.map((member: any, index: any) => (
-            <tr key={index} onClick={() => redirectMemberPage(member)}>
-              <td>{member.name}</td>
-              <td>{member.designation}</td>
-              <td>{member.currentWorkplace}</td>
-              <td>{member.personalEmail}</td>
-              <td>{member.personalContactNumber}</td>
-              <td>{member.officialEmail}</td>
-              <td>{member.specialization}</td>
+          props.searchResults &&
+          props.searchResults.map((result: any, index: any) => (
+            <tr key={index} onClick={() => redirectMemberPage(result)}>
+              <td>{result.name}</td>
+              <td>{result.designation}</td>
+              <td>{result.currentWorkplace}</td>
+              <td>{result.personalEmail}</td>
+              <td>{result.personalContactNumber}</td>
+              <td>{result.officialEmail}</td>
+              <td>{result.specialization}</td>
             </tr>
           ))}
       </tbody>

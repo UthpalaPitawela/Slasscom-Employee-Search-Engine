@@ -1,5 +1,5 @@
 
-export type MemberData = {
+export interface MemberData{
     name: string,
     designation?: string,
     currentWorkplace?:string,
