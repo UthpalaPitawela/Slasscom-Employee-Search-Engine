@@ -1,13 +1,11 @@
 
-export interface MemberData{
-    name?: string,
+export type MemberData = {
+    name: string,
     designation?: string,
     currentWorkplace?:string,
     personalEmail?: string,
     personalContactNumber?: number,
     officialEmail?: string,
-    professionalInstitutes?: string,
-    specialization?: string
     nic?: string,
     id?: string,
     createdAt?: any,
