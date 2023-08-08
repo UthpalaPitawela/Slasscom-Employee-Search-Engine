@@ -11,6 +11,7 @@ import { API, Amplify} from "aws-amplify";
 import * as queries from '../graphql/queries';
 import { GraphQLQuery, GRAPHQL_AUTH_MODE  } from '@aws-amplify/api';
 import { ListMembersQuery, ListMembersQueryVariables } from "../API";
+import { MemberData } from "../types/memberDataType";
 
 
 // import {Row} from 'react-bootstrap'
@@ -21,15 +22,15 @@ const SearchPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [members,setMembers] = useState([]);
   const [suggestionList,setSuggestionList] = useState();
-  const [searchResults, setSearchResults] = useState();
+  const [searchResults, setSearchResults] = useState<MemberData[]>();
 
   const handleSelectCriteria = (criteria: string) => {
     setSearchCriteria(criteria)
 
   }
 
-  const handleInputChange = async (data: any) => {
-    const results:any= members && members.length && members.filter((member: any) =>  {return member[searchCriteria] === data[searchCriteria]})
+  const handleInputChange =  (data: any) => {
+    const results:MemberData[]=  members?.filter((member: any) =>  {return member[searchCriteria] === data[searchCriteria]})
     setSearchResults(results);
   }
 
@@ -53,7 +54,7 @@ const SearchPage = () => {
         }
         );
       if (memberData && memberData.data && memberData.data.listMembers && memberData.data.listMembers.items) {
-        const memData: any = memberData.data.listMembers.items;
+        const memData:any= memberData?.data?.listMembers?.items;
         setMembers(memData);
         const uniqueSuggestions = [...new Set(memData.map((item: any) => item[searchCriteria]))];
         const uniqueArray: any = uniqueSuggestions.map(value  => ({ [searchCriteria]: value  }));

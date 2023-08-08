@@ -1,20 +1,20 @@
-import config from "./config.json";
+// import config from "./config.json";
 
 export function getAwsConfig() {
   return {
     Auth: {
-      region: config.AUTH_REGION,
-      userPoolId: config.AUTH_USER_POOL,
-      userPoolWebClientId: config.AUTH_CLIENT,
+      region: process.env.REACT_APP_AUTH_REGION,
+      userPoolId: process.env.REACT_APP_AUTH_USER_POOL,
+      userPoolWebClientId: process.env.REACT_APP_AUTH_CLIENT,
       oauth: {
-        domain: config.AUTH_DOMAIN,
+        domain: process.env.REACT_APP_AUTH_DOMAIN,
         scope: [
           "email",
           "profile",
           "openid",
         ],
-        redirectSignIn: `${config.CALLBACK_URL}`,
-        redirectSignOut: `${config.CALLBACK_URL}`,
+        redirectSignIn: process.env.REACT_APP_CALLBACK_URL,
+        redirectSignOut: process.env.REACT_APP_CALLBACK_URL,
         responseType: "token"
       },
     },
@@ -27,10 +27,10 @@ export function getAwsConfig() {
       //         region: 'eu-east-1',
       //     },
       // ],
-      aws_appsync_graphqlEndpoint: `${config.AWS_APPSYNC_GRAPHQL_ENDPOINT}`,
-      aws_appsync_region: `${config.AWS_APPSYNC_REGION}`,
-      aws_appsync_authenticationType: `${config.AWS_APPSYNC_AUTHENTICATION_TYPE}`,
-      aws_appsync_apiKey: `${config.AWS_APPSYNC_API_KEY}`,
+      aws_appsync_graphqlEndpoint:process.env.REACT_APP_AWS_APPSYNC_GRAPHQL_ENDPOINT,
+      aws_appsync_region: process.env.REACT_APP_AWS_APPSYNC_REGION,
+      aws_appsync_authenticationType: process.env.REACT_APP_AWS_APPSYNC_AUTHENTICATION_TYPE,
+      aws_appsync_apiKey: process.env.REACT_APP_AWS_APPSYNC_API_KEY,
   },
   };
 }
