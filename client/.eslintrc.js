@@ -23,7 +23,6 @@ module.exports = {
     },
   },
   rules: {
-    'no-unused-vars': 'warn',
     // Add or customize rules based on your preferences and requirements
     'react/jsx-uses-react': 'off', // Not needed with React 17+
     'react/react-in-jsx-scope': 'off', // Not needed with React 17+

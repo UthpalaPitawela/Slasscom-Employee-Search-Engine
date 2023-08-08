@@ -11,7 +11,6 @@ import { API, Amplify} from "aws-amplify";
 import * as queries from '../graphql/queries';
 import { GraphQLQuery, GRAPHQL_AUTH_MODE  } from '@aws-amplify/api';
 import { ListMembersQuery, ListMembersQueryVariables } from "../API";
-import { MemberData } from "../types/memberDataType";
 
 
 // import {Row} from 'react-bootstrap'
@@ -20,20 +19,16 @@ Amplify.configure(getAwsConfig());
 const SearchPage = () => {
   const [searchCriteria, setSearchCriteria] = useState("name")
   const [searchQuery, setSearchQuery] = useState("");
-  const [members,setMembers] = useState([]);
-  const [suggestionList,setSuggestionList] = useState();
-  const [searchResults, setSearchResults] = useState<MemberData[]>();
+  const [members,setMembers] = useState();
 
   const handleSelectCriteria = (criteria: string) => {
     setSearchCriteria(criteria)
 
   }
 
-  const handleInputChange =  (data: any) => {
-    const results:MemberData[]=  members?.filter((member: any) =>  {return member[searchCriteria] === data[searchCriteria]})
-    setSearchResults(results);
+  const handleInputChange = (searchTerm: string) => {
+    setSearchQuery(searchTerm)
   }
-
   const variables: ListMembersQueryVariables = {
     filter: {
       [searchCriteria]: {
@@ -43,8 +38,7 @@ const SearchPage = () => {
 
   };
 
-  const handleSearch = async (query: string) => {
-    setSearchQuery(query)
+  const handleSearch = async () => {
     try {
       const memberData = await API.graphql<GraphQLQuery<ListMembersQuery>>(
         { 
@@ -54,11 +48,9 @@ const SearchPage = () => {
         }
         );
       if (memberData && memberData.data && memberData.data.listMembers && memberData.data.listMembers.items) {
-        const memData:any= memberData?.data?.listMembers?.items;
-        setMembers(memData);
-        const uniqueSuggestions = [...new Set(memData.map((item: any) => item[searchCriteria]))];
-        const uniqueArray: any = uniqueSuggestions.map(value  => ({ [searchCriteria]: value  }));
-        setSuggestionList(uniqueArray)
+        const memData: any = memberData.data.listMembers.items
+        console.log('memData', memData)
+        setMembers(memData)
 
       }
     }catch (err) { console.log('error fetching members', err) }
@@ -84,9 +76,7 @@ const SearchPage = () => {
           <Container className="mt-5">
             <Col sm={2}></Col>
             <Col sm={8}>
-             <SearchCriteria 
-             handleSelectCriteria={handleSelectCriteria} 
-             searchCriteria={searchCriteria}/>
+             <SearchCriteria handleSelectCriteria={handleSelectCriteria} searchCriteria={searchCriteria}/>
             </Col>
           </Container>
         </Col>
@@ -96,14 +86,12 @@ const SearchPage = () => {
         <Col md={10}>
           <Container className="mt-4">
             <Col sm={3}></Col>
-            <Col sm={9}>
+            <Col sm={8}>
               {" "}
               <SearchInput
-                // searchQuery={searchQuery}
+                searchQuery={searchQuery}
                 handleInputChange={handleInputChange}
-                suggestionList={suggestionList}
                 handleSearch={handleSearch}
-                searchCriteria={searchCriteria}
               />
             </Col>
           </Container>
@@ -114,7 +102,7 @@ const SearchPage = () => {
         <Col md={12}>
           <Container className="mt-4">
             <Col sm={12}>
-              <SearchResultList searchResults={searchResults}  />
+              <SearchResultList members={members}  />
             </Col>
           </Container>
         </Col>
