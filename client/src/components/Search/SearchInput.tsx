@@ -1,28 +1,31 @@
-import React from "react";
-import {
-  Button,
-  Col,
-  // Container,
-  Form,
-  Row,
-} from "react-bootstrap";
+
+import {  Col, Row } from "react-bootstrap";
+import { AsyncTypeahead } from "react-bootstrap-typeahead";
 
 const SearchInput = (props: any) => {
   return (
-    // <Container className="mt-5">
-
     <Row>
-      <Col>
-        <Form className="d-flex">
-          <Form.Control
-            type="search"
-            placeholder="Search"
-            className="me-2"
-            aria-label="Search"
-            onChange={(e)=> props.handleInputChange(e.target.value)}
-          />
-          <Button variant="primary" onClick={()=> props.handleSearch()}>Search</Button>
-        </Form>
+      <Col sm={11}>
+
+        <AsyncTypeahead
+          id="autocomplete-input"
+          labelKey={(option: any) => (option[props.searchCriteria] ? option[props.searchCriteria] : '')} 
+          isLoading={false}
+          onSearch={props.handleSearch}
+          options={props.suggestionList}
+          placeholder="Search"
+          onChange={(selected) => {
+            if (selected.length > 0) {
+              props.handleInputChange(selected[0]);
+            }
+          }}
+        />
+      </Col>
+      <Col sm={1}>
+        {/* <Button variant="primary" onClick={() => props.handleSearch()}>
+          Search
+        </Button> */}
+        {/* </Form> */}
       </Col>
     </Row>
 
