@@ -4,7 +4,15 @@ import { Table } from "react-bootstrap";
 import { MemberData } from "../../types/memberDataType";
 
 const SearchResultList = (props: any) => {
+  console.log('props.searchResults', props.searchResults)
   const navigate = useNavigate();
+  let  extractedMembers = props?.searchResults??[];
+  if (props.searchCriteria === 'specialization' && 
+  (extractedMembers.length > 0 && extractedMembers[0].member && 
+    extractedMembers[0].member.items && extractedMembers[0].member.items.length)) {
+     
+     extractedMembers = extractedMembers[0].member.items.map((item: any )=> item.member);
+  }
 
   const redirectMemberPage = (memberData: MemberData) => {
     const memData = JSON.stringify(memberData);
@@ -18,25 +26,20 @@ const SearchResultList = (props: any) => {
             <th>Name</th>
             <th>Designation</th>
             <th>Current Workplace</th>
-            <th>Personal Email</th>
-            <th>Personal Contact Number</th>
-            <th>Official Email</th>
-            <th>Specialization</th>
+            {/* <th>Specialization</th> */}
+            <th>Profile Summary</th>
           </tr>
         )}
       </thead>
       <tbody>
-        {props &&
-          props.searchResults &&
-          props.searchResults.map((result: any, index: any) => (
+        {
+          extractedMembers.map((result: any, index: any) => (
             <tr key={index} onClick={() => redirectMemberPage(result)}>
-              <td>{result.name}</td>
-              <td>{result.designation}</td>
-              <td>{result.currentWorkplace}</td>
-              <td>{result.personalEmail}</td>
-              <td>{result.personalContactNumber}</td>
-              <td>{result.officialEmail}</td>
-              <td>{result.specialization}</td>
+              <td>{result?.fullName ?? ""}</td>
+              <td>{result?.designation??""}</td>
+              <td>{result?.currentWorkplace??""}</td>
+              {/* <td>{result?.specialization??""}</td> */}
+              <td>{result?.profileSummary??""}</td>
             </tr>
           ))}
       </tbody>

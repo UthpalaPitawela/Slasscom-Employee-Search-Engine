@@ -3,9 +3,7 @@ export interface MemberData{
     name?: string,
     designation?: string,
     currentWorkplace?:string,
-    personalEmail?: string,
-    personalContactNumber?: number,
-    officialEmail?: string,
+    contactDetails: string,
     professionalInstitutes?: string,
     specialization?: string
     nic?: string,
@@ -22,10 +20,8 @@ interface MemberResultsTitles {
 export const MemberResultsTitles: MemberResultsTitles = {
     designation: 'Designation',
     currentWorkplace:'Current Workplace',
-    personalEmail:'Personal Email',
-    personalContactNumber:'Personal Contact Number',
-    officialEmail:'Official Email',
-    specialization: 'Specialization'
+    specialization: 'Specialization',
+    profileSummary: 'Profile Summary'
 }
 
 
