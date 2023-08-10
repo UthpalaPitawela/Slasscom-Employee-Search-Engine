@@ -4,15 +4,15 @@ const { v4: uuidv4 } = require('uuid');
 
 // Configure AWS SDK
 AWS.config.update({
-  region: process.env.REACT_APP_DYNAMODB_REGION,
-  accessKeyId: process.env.REACT_APP_ACCESS_KEY,
-  secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY
+  region: "us-east-1",
+  accessKeyId: "AKIA6L42DEMGHAYPWN4M",
+  secretAccessKey: "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"
 });
 
 const DynamoDB = new AWS.DynamoDB.DocumentClient();
 
 // REST API endpoint URL
-const restEndpoint = process.env.REACT_APP_REST_ENDPOINT
+const restEndpoint = "https://demo3211332.mockable.io/getMember"
 
 async function fetchDataFromRestAPI() {
 
@@ -29,7 +29,7 @@ async function fetchDataFromRestAPI() {
 }
 
 async function seedDynamoDB(data) {
-  const tableName = process.env.REACT_APP_DYNAMODB_TABLE
+  const tableName = "Member-ynrdvamykba6xegc6vzup4icxi-dev"
 
   try {
     for (const item of data) {
@@ -45,7 +45,9 @@ async function seedDynamoDB(data) {
             profileSummary: item?.profileSummary??'',
             contactDetails: item?.contactDetails?? {},
             previousWorkplaces: item?.previousWorkplaces??[], 
-            professionalInstitutes: item?.professionalInstitutes??[]
+            professionalInstitutes: item?.professionalInstitutes??[],
+            createdAt: item?.createdAt??'',
+            updatedAt: item?.updatedAt??''
         }
       };
 

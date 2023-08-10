@@ -37,15 +37,13 @@ export const onCreateMember = /* GraphQL */ `
         __typename
       }
       previousWorkplaces {
-        items {
-          id
-          memberId
-          previousWorkplaceId
-          createdAt
-          updatedAt
+        workplace
+        designations {
+          designation
+          from
+          to
           __typename
         }
-        nextToken
         __typename
       }
       professionalInstitutes {
@@ -101,15 +99,13 @@ export const onUpdateMember = /* GraphQL */ `
         __typename
       }
       previousWorkplaces {
-        items {
-          id
-          memberId
-          previousWorkplaceId
-          createdAt
-          updatedAt
+        workplace
+        designations {
+          designation
+          from
+          to
           __typename
         }
-        nextToken
         __typename
       }
       professionalInstitutes {
@@ -165,15 +161,13 @@ export const onDeleteMember = /* GraphQL */ `
         __typename
       }
       previousWorkplaces {
-        items {
-          id
-          memberId
-          previousWorkplaceId
-          createdAt
-          updatedAt
+        workplace
+        designations {
+          designation
+          from
+          to
           __typename
         }
-        nextToken
         __typename
       }
       professionalInstitutes {
@@ -269,107 +263,14 @@ export const onDeleteSpecialization = /* GraphQL */ `
     }
   }
 `;
-export const onCreatePreviousWorkplace = /* GraphQL */ `
-  subscription OnCreatePreviousWorkplace(
-    $filter: ModelSubscriptionPreviousWorkplaceFilterInput
-  ) {
-    onCreatePreviousWorkplace(filter: $filter) {
-      id
-      workplace
-      designations {
-        designation
-        from
-        to
-        __typename
-      }
-      member {
-        items {
-          id
-          memberId
-          previousWorkplaceId
-          createdAt
-          updatedAt
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const onUpdatePreviousWorkplace = /* GraphQL */ `
-  subscription OnUpdatePreviousWorkplace(
-    $filter: ModelSubscriptionPreviousWorkplaceFilterInput
-  ) {
-    onUpdatePreviousWorkplace(filter: $filter) {
-      id
-      workplace
-      designations {
-        designation
-        from
-        to
-        __typename
-      }
-      member {
-        items {
-          id
-          memberId
-          previousWorkplaceId
-          createdAt
-          updatedAt
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const onDeletePreviousWorkplace = /* GraphQL */ `
-  subscription OnDeletePreviousWorkplace(
-    $filter: ModelSubscriptionPreviousWorkplaceFilterInput
-  ) {
-    onDeletePreviousWorkplace(filter: $filter) {
-      id
-      workplace
-      designations {
-        designation
-        from
-        to
-        __typename
-      }
-      member {
-        items {
-          id
-          memberId
-          previousWorkplaceId
-          createdAt
-          updatedAt
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
 export const onCreateProfessionalInstitute = /* GraphQL */ `
   subscription OnCreateProfessionalInstitute(
     $filter: ModelSubscriptionProfessionalInstituteFilterInput
   ) {
     onCreateProfessionalInstitute(filter: $filter) {
       id
-      name
       title
+      institute
       duration {
         from
         to
@@ -399,8 +300,8 @@ export const onUpdateProfessionalInstitute = /* GraphQL */ `
   ) {
     onUpdateProfessionalInstitute(filter: $filter) {
       id
-      name
       title
+      institute
       duration {
         from
         to
@@ -430,8 +331,8 @@ export const onDeleteProfessionalInstitute = /* GraphQL */ `
   ) {
     onDeleteProfessionalInstitute(filter: $filter) {
       id
-      name
       title
+      institute
       duration {
         from
         to
@@ -478,7 +379,7 @@ export const onCreateMemberSpecialization = /* GraphQL */ `
           __typename
         }
         previousWorkplaces {
-          nextToken
+          workplace
           __typename
         }
         professionalInstitutes {
@@ -529,7 +430,7 @@ export const onUpdateMemberSpecialization = /* GraphQL */ `
           __typename
         }
         previousWorkplaces {
-          nextToken
+          workplace
           __typename
         }
         professionalInstitutes {
@@ -580,7 +481,7 @@ export const onDeleteMemberSpecialization = /* GraphQL */ `
           __typename
         }
         previousWorkplaces {
-          nextToken
+          workplace
           __typename
         }
         professionalInstitutes {
@@ -594,177 +495,6 @@ export const onDeleteMemberSpecialization = /* GraphQL */ `
       specialization {
         id
         specialization
-        member {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const onCreateMemberPrevWorkPlace = /* GraphQL */ `
-  subscription OnCreateMemberPrevWorkPlace(
-    $filter: ModelSubscriptionMemberPrevWorkPlaceFilterInput
-  ) {
-    onCreateMemberPrevWorkPlace(filter: $filter) {
-      id
-      memberId
-      previousWorkplaceId
-      member {
-        id
-        nic
-        fullName
-        currentWorkplace
-        designation
-        specialization {
-          nextToken
-          __typename
-        }
-        profileSummary
-        contactDetails {
-          __typename
-        }
-        previousWorkplaces {
-          nextToken
-          __typename
-        }
-        professionalInstitutes {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      previousWorkplace {
-        id
-        workplace
-        designations {
-          designation
-          from
-          to
-          __typename
-        }
-        member {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const onUpdateMemberPrevWorkPlace = /* GraphQL */ `
-  subscription OnUpdateMemberPrevWorkPlace(
-    $filter: ModelSubscriptionMemberPrevWorkPlaceFilterInput
-  ) {
-    onUpdateMemberPrevWorkPlace(filter: $filter) {
-      id
-      memberId
-      previousWorkplaceId
-      member {
-        id
-        nic
-        fullName
-        currentWorkplace
-        designation
-        specialization {
-          nextToken
-          __typename
-        }
-        profileSummary
-        contactDetails {
-          __typename
-        }
-        previousWorkplaces {
-          nextToken
-          __typename
-        }
-        professionalInstitutes {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      previousWorkplace {
-        id
-        workplace
-        designations {
-          designation
-          from
-          to
-          __typename
-        }
-        member {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const onDeleteMemberPrevWorkPlace = /* GraphQL */ `
-  subscription OnDeleteMemberPrevWorkPlace(
-    $filter: ModelSubscriptionMemberPrevWorkPlaceFilterInput
-  ) {
-    onDeleteMemberPrevWorkPlace(filter: $filter) {
-      id
-      memberId
-      previousWorkplaceId
-      member {
-        id
-        nic
-        fullName
-        currentWorkplace
-        designation
-        specialization {
-          nextToken
-          __typename
-        }
-        profileSummary
-        contactDetails {
-          __typename
-        }
-        previousWorkplaces {
-          nextToken
-          __typename
-        }
-        professionalInstitutes {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      previousWorkplace {
-        id
-        workplace
-        designations {
-          designation
-          from
-          to
-          __typename
-        }
         member {
           nextToken
           __typename
@@ -802,7 +532,7 @@ export const onCreateMemberProfInstitute = /* GraphQL */ `
           __typename
         }
         previousWorkplaces {
-          nextToken
+          workplace
           __typename
         }
         professionalInstitutes {
@@ -815,8 +545,8 @@ export const onCreateMemberProfInstitute = /* GraphQL */ `
       }
       professionalInstitute {
         id
-        name
         title
+        institute
         duration {
           from
           to
@@ -859,7 +589,7 @@ export const onUpdateMemberProfInstitute = /* GraphQL */ `
           __typename
         }
         previousWorkplaces {
-          nextToken
+          workplace
           __typename
         }
         professionalInstitutes {
@@ -872,8 +602,8 @@ export const onUpdateMemberProfInstitute = /* GraphQL */ `
       }
       professionalInstitute {
         id
-        name
         title
+        institute
         duration {
           from
           to
@@ -916,7 +646,7 @@ export const onDeleteMemberProfInstitute = /* GraphQL */ `
           __typename
         }
         previousWorkplaces {
-          nextToken
+          workplace
           __typename
         }
         professionalInstitutes {
@@ -929,8 +659,8 @@ export const onDeleteMemberProfInstitute = /* GraphQL */ `
       }
       professionalInstitute {
         id
-        name
         title
+        institute
         duration {
           from
           to

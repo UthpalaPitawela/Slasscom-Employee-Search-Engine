@@ -1,5 +1,5 @@
 projects:
-  slasscomemp:
+  slasscommem:
     schemaPath: src/graphql/schema.json
     includes:
       - src/graphql/**/*.ts

@@ -7,7 +7,7 @@ const SearchResultList = (props: any) => {
   console.log('props.searchResults', props.searchResults)
   const navigate = useNavigate();
   let  extractedMembers = props?.searchResults??[];
-  if (props.searchCriteria === 'specialization' && 
+  if ((props.searchCriteria === 'specialization' || props.searchCriteria === 'institute') && 
   (extractedMembers.length > 0 && extractedMembers[0].member && 
     extractedMembers[0].member.items && extractedMembers[0].member.items.length)) {
      

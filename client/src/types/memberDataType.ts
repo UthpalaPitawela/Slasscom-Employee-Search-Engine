@@ -20,7 +20,7 @@ interface MemberResultsTitles {
 export const MemberResultsTitles: MemberResultsTitles = {
     designation: 'Designation',
     currentWorkplace:'Current Workplace',
-    specialization: 'Specialization',
+    // specialization: 'Specialization',
     profileSummary: 'Profile Summary'
 }
 

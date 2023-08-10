@@ -3,16 +3,8 @@ import { Container, Col, Row } from "react-bootstrap";
 import SearchInput from "../components/Search/SearchInput";
 import SearchResultList from "../components/Search/SearchResultList ";
 import SearchCriteria from "../components/Search/SearchCriteria";
-// import { listMembers} from '../graphql/queries'
-
-
-// import { ListMembersQuery, ListMembersQueryVariables } from "../API";
 import { MemberData } from "../types/memberDataType";
-import { searchByMemberName,searchBySpecialization } from "../services/queries";
-
-
-// import {Row} from 'react-bootstrap'
-// Amplify.configure(getAwsConfig());
+import { searchByMemberName,searchBySpecialization , searchByInstitute} from "../services/queries";
 
 const SearchPage = () => {
   const [searchCriteria, setSearchCriteria] = useState("fullName")
@@ -33,14 +25,9 @@ const SearchPage = () => {
   
   const handleSearch = () => {
     if (selectedSuggestion) {
-      console.log('selectedSuggestion', selectedSuggestion)
-      console.log('members', members)
       const results:any=  members?.filter((member: any) =>  {return member[searchCriteria] === selectedSuggestion})
-      console.log('results', results)
       setSearchResults(results);
-
-    }
-      
+    }     
   }
 
   const handleMemberFilter = (searchCriteria: string, searchQuery: string) => {
@@ -52,26 +39,28 @@ const SearchPage = () => {
           break;
       case "specialization":
           return searchBySpecialization(searchCriteria,searchQuery)
+      case "institute":
+          return searchByInstitute(searchCriteria,searchQuery)
       default:
           console.log("Invalid choice.");
           break;
     }
   }
 
+  const handleSearchSuggestions  = (memberData: any) => {
+      setMembers(memberData);
+      const uniqueSuggestions = [...new Set(memberData.map((item: any) => item[searchCriteria]))];
+      const uniqueArray: any = uniqueSuggestions.map(value  => ({ [searchCriteria]: value  }));
+      setSuggestionList(uniqueArray)
+  }
 
    const handleSimpleSearch= async () => {
      try {
       const memberData: any = await handleMemberFilter(searchCriteria, searchQuery)
-      console.log('memberData', memberData)
       const memData:any= memberData?.data?.listMembers?.items;
-      console.log('memData', memData)
-      setMembers(memData);
-      const uniqueSuggestions = [...new Set(memData.map((item: any) => item[searchCriteria]))];
-      const uniqueArray: any = uniqueSuggestions.map(value  => ({ [searchCriteria]: value  }));
-      setSuggestionList(uniqueArray)
+      handleSearchSuggestions(memData);     
      } catch(error: any) {
       console.log('error fetching members', error)
-
      }
    }
 
@@ -79,13 +68,22 @@ const SearchPage = () => {
     try {
      const memberData: any = await handleMemberFilter(searchCriteria, searchQuery)
      const memData:any= memberData?.data?.listSpecializations?.items;
-     setMembers(memData);
-     const uniqueSuggestions = [...new Set(memData.map((item: any) => item[searchCriteria]))];
-     const uniqueArray: any = uniqueSuggestions.map(value  => ({ [searchCriteria]: value  }));
-     setSuggestionList(uniqueArray)
+     handleSearchSuggestions(memData);
     } catch(error: any) {
       console.log('error fetching members', error)
     }
+  }
+
+
+
+  const handleSearchByInstitute = async() => {
+    try {
+      const memberData: any = await handleMemberFilter(searchCriteria, searchQuery)
+      const memData:any= memberData?.data?.listProfessionalInstitutes?.items;
+      handleSearchSuggestions(memData);
+     } catch(error: any) {
+       console.log('error fetching members', error)
+     }
   }
 
 
@@ -95,22 +93,9 @@ const SearchPage = () => {
       handleSimpleSearch();
     } else if (searchCriteria === 'specialization') {
       handleSearchBySpecialization();
+    } else if (searchCriteria === 'institute') {
+      handleSearchByInstitute();
     }
-    // try {
-    //   const memberData: any = await handleMemberFilter(searchCriteria, searchQuery)
-    //     console.log('memberData', memberData)
-    //     const filteredMemberData = getMemberDataFromSearchResults(memberData, searchCriteria);
-    //   // if (memberData && memberData.data && memberData.data.listMembers && memberData.data.listMembers.items) {
-    //   //   // const memData:any= memberData?.data?.listMembers?.items;
-    //   setMembers(filteredMemberData);
-    //   const uniqueSuggestions = [...new Set(filteredMemberData.map((item: any) => item[searchCriteria]))];
-    //   console.log('uniqueSuggestions', uniqueSuggestions)
-    //   const uniqueArray: any = uniqueSuggestions.map(value  => ({ [searchCriteria]: value  }));
-    //   console.log('uniqueArray', uniqueArray)
-    //   setSuggestionList(uniqueArray)
-
-    //   // }
-    // }catch (err) { console.log('error fetching members', err) }
   }
 
   return (

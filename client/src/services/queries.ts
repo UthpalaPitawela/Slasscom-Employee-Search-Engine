@@ -1,7 +1,7 @@
 import * as queries from '../graphql/queries';
 import { GraphQLQuery, GRAPHQL_AUTH_MODE  } from '@aws-amplify/api';
-import { ListMembersQuery, ListSpecializationsQuery } from "../API";
-import { getSimpleVariableFormat, getSpecializationVariableFormat } from './queryVariables';
+import { GetMemberQuery, ListMembersQuery, ListProfessionalInstitutesQuery, ListSpecializationsQuery } from "../API";
+import { getMemberByIdVariableFormat, getSimpleVariableFormat, getSpecializationVariableFormat,getInstitueVariableFormat } from './queryVariables';
 // import { ListMembersQuery, ListMembersQueryVariables } from "../API";
 // import { MemberData } from "../types/memberDataType";
 import { API, Amplify} from "aws-amplify";
@@ -24,6 +24,28 @@ export const searchBySpecialization = async (searchCriteria: string, searchQuery
         { 
           query: queries.listSpecializations,
           variables: getSpecializationVariableFormat(searchCriteria,searchQuery),
+          authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
+        }
+        );
+    return memberData;
+}
+export const searchByInstitute = async (searchCriteria: string, searchQuery: string) => {
+  console.log('searchQuery=====================', searchQuery)
+  console.log('searchCriteria====================', searchCriteria)
+    const memberData: any = await API.graphql<GraphQLQuery<ListProfessionalInstitutesQuery>>(
+        { 
+          query: queries.listProfessionalInstitutes,
+          variables: getInstitueVariableFormat(searchCriteria,searchQuery),
+          authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
+        }
+        );
+    return memberData;
+}
+export const getMemberById = async (memberId: string) => {
+    const memberData: any = await API.graphql<GraphQLQuery<GetMemberQuery>>(
+        { 
+          query: queries.getMember,
+          variables: getMemberByIdVariableFormat(memberId),
           authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
         }
         );

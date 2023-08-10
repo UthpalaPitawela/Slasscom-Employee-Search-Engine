@@ -37,15 +37,13 @@ export const getMember = /* GraphQL */ `
         __typename
       }
       previousWorkplaces {
-        items {
-          id
-          memberId
-          previousWorkplaceId
-          createdAt
-          updatedAt
+        workplace
+        designations {
+          designation
+          from
+          to
           __typename
         }
-        nextToken
         __typename
       }
       professionalInstitutes {
@@ -88,7 +86,7 @@ export const listMembers = /* GraphQL */ `
           __typename
         }
         previousWorkplaces {
-          nextToken
+          workplace
           __typename
         }
         professionalInstitutes {
@@ -140,82 +138,14 @@ export const listSpecializations = /* GraphQL */ `
         member {
           items {
             member {
-              id
-              fullName
-              designation
               currentWorkplace
+              designation
+              fullName
+              id
+              nic
               profileSummary
-              specialization {
-                items {
-                  specialization {
-                    specialization
-                  }
-                }
-              }
             }
           }
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const getPreviousWorkplace = /* GraphQL */ `
-  query GetPreviousWorkplace($id: ID!) {
-    getPreviousWorkplace(id: $id) {
-      id
-      workplace
-      designations {
-        designation
-        from
-        to
-        __typename
-      }
-      member {
-        items {
-          id
-          memberId
-          previousWorkplaceId
-          createdAt
-          updatedAt
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const listPreviousWorkplaces = /* GraphQL */ `
-  query ListPreviousWorkplaces(
-    $filter: ModelPreviousWorkplaceFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listPreviousWorkplaces(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        workplace
-        designations {
-          designation
-          from
-          to
-          __typename
-        }
-        member {
           nextToken
           __typename
         }
@@ -232,8 +162,8 @@ export const getProfessionalInstitute = /* GraphQL */ `
   query GetProfessionalInstitute($id: ID!) {
     getProfessionalInstitute(id: $id) {
       id
-      name
       title
+      institute
       duration {
         from
         to
@@ -270,14 +200,24 @@ export const listProfessionalInstitutes = /* GraphQL */ `
     ) {
       items {
         id
-        name
         title
+        institute
         duration {
           from
           to
           __typename
         }
         member {
+          items {
+            member {
+              currentWorkplace
+              designation
+              fullName
+              nic
+              profileSummary
+              id
+            }
+          }
           nextToken
           __typename
         }
@@ -311,7 +251,7 @@ export const getMemberSpecialization = /* GraphQL */ `
           __typename
         }
         previousWorkplaces {
-          nextToken
+          workplace
           __typename
         }
         professionalInstitutes {
@@ -473,195 +413,6 @@ export const memberSpecializationsBySpecializationId = /* GraphQL */ `
     }
   }
 `;
-export const getMemberPrevWorkPlace = /* GraphQL */ `
-  query GetMemberPrevWorkPlace($id: ID!) {
-    getMemberPrevWorkPlace(id: $id) {
-      id
-      memberId
-      previousWorkplaceId
-      member {
-        id
-        nic
-        fullName
-        currentWorkplace
-        designation
-        specialization {
-          nextToken
-          __typename
-        }
-        profileSummary
-        contactDetails {
-          __typename
-        }
-        previousWorkplaces {
-          nextToken
-          __typename
-        }
-        professionalInstitutes {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      previousWorkplace {
-        id
-        workplace
-        designations {
-          designation
-          from
-          to
-          __typename
-        }
-        member {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const listMemberPrevWorkPlaces = /* GraphQL */ `
-  query ListMemberPrevWorkPlaces(
-    $filter: ModelMemberPrevWorkPlaceFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listMemberPrevWorkPlaces(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        memberId
-        previousWorkplaceId
-        member {
-          id
-          nic
-          fullName
-          currentWorkplace
-          designation
-          profileSummary
-          createdAt
-          updatedAt
-          __typename
-        }
-        previousWorkplace {
-          id
-          workplace
-          createdAt
-          updatedAt
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const memberPrevWorkPlacesByMemberId = /* GraphQL */ `
-  query MemberPrevWorkPlacesByMemberId(
-    $memberId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelMemberPrevWorkPlaceFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    memberPrevWorkPlacesByMemberId(
-      memberId: $memberId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        memberId
-        previousWorkplaceId
-        member {
-          id
-          nic
-          fullName
-          currentWorkplace
-          designation
-          profileSummary
-          createdAt
-          updatedAt
-          __typename
-        }
-        previousWorkplace {
-          id
-          workplace
-          createdAt
-          updatedAt
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const memberPrevWorkPlacesByPreviousWorkplaceId = /* GraphQL */ `
-  query MemberPrevWorkPlacesByPreviousWorkplaceId(
-    $previousWorkplaceId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelMemberPrevWorkPlaceFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    memberPrevWorkPlacesByPreviousWorkplaceId(
-      previousWorkplaceId: $previousWorkplaceId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        memberId
-        previousWorkplaceId
-        member {
-          id
-          nic
-          fullName
-          currentWorkplace
-          designation
-          profileSummary
-          createdAt
-          updatedAt
-          __typename
-        }
-        previousWorkplace {
-          id
-          workplace
-          createdAt
-          updatedAt
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
 export const getMemberProfInstitute = /* GraphQL */ `
   query GetMemberProfInstitute($id: ID!) {
     getMemberProfInstitute(id: $id) {
@@ -683,7 +434,7 @@ export const getMemberProfInstitute = /* GraphQL */ `
           __typename
         }
         previousWorkplaces {
-          nextToken
+          workplace
           __typename
         }
         professionalInstitutes {
@@ -696,8 +447,8 @@ export const getMemberProfInstitute = /* GraphQL */ `
       }
       professionalInstitute {
         id
-        name
         title
+        institute
         duration {
           from
           to
@@ -745,8 +496,8 @@ export const listMemberProfInstitutes = /* GraphQL */ `
         }
         professionalInstitute {
           id
-          name
           title
+          institute
           createdAt
           updatedAt
           __typename
@@ -792,8 +543,8 @@ export const memberProfInstitutesByMemberId = /* GraphQL */ `
         }
         professionalInstitute {
           id
-          name
           title
+          institute
           createdAt
           updatedAt
           __typename
@@ -839,8 +590,8 @@ export const memberProfInstitutesByProfessionalInstituteId = /* GraphQL */ `
         }
         professionalInstitute {
           id
-          name
           title
+          institute
           createdAt
           updatedAt
           __typename
