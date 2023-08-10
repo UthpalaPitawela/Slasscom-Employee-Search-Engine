@@ -3,65 +3,99 @@ import { Container, Col, Row } from "react-bootstrap";
 import SearchInput from "../components/Search/SearchInput";
 import SearchResultList from "../components/Search/SearchResultList ";
 import SearchCriteria from "../components/Search/SearchCriteria";
-// import { listMembers} from '../graphql/queries'
-import { getAwsConfig } from "../utils/getAwsConfig";
-
-
-import { API, Amplify} from "aws-amplify";
-import * as queries from '../graphql/queries';
-import { GraphQLQuery, GRAPHQL_AUTH_MODE  } from '@aws-amplify/api';
-import { ListMembersQuery, ListMembersQueryVariables } from "../API";
 import { MemberData } from "../types/memberDataType";
-
-
-// import {Row} from 'react-bootstrap'
-Amplify.configure(getAwsConfig());
+import { searchByMemberName,searchBySpecialization , searchByInstitute} from "../services/queries";
 
 const SearchPage = () => {
-  const [searchCriteria, setSearchCriteria] = useState("name")
+  const [searchCriteria, setSearchCriteria] = useState("fullName")
   const [searchQuery, setSearchQuery] = useState("");
   const [members,setMembers] = useState([]);
   const [suggestionList,setSuggestionList] = useState();
   const [searchResults, setSearchResults] = useState<MemberData[]>();
+  const [selectedSuggestion, setSelectedSuggestion] = useState('')
 
   const handleSelectCriteria = (criteria: string) => {
     setSearchCriteria(criteria)
 
   }
 
-  const handleInputChange =  (data: any) => {
-    const results:MemberData[]=  members?.filter((member: any) =>  {return member[searchCriteria] === data[searchCriteria]})
-    setSearchResults(results);
+  const handleInputChange =  (data: any) => { 
+    setSelectedSuggestion(data[searchCriteria]);    
+  }
+  
+  const handleSearch = () => {
+    if (selectedSuggestion) {
+      const results:any=  members?.filter((member: any) =>  {return member[searchCriteria] === selectedSuggestion})
+      setSearchResults(results);
+    }     
   }
 
-  const variables: ListMembersQueryVariables = {
-    filter: {
-      [searchCriteria]: {
-        contains: searchQuery 
-      }
-    },
+  const handleMemberFilter = (searchCriteria: string, searchQuery: string) => {
+    switch (searchCriteria) {
+      case "fullName":
+      case "designation":
+      case "currentWorkplace":
+          return searchByMemberName(searchCriteria, searchQuery)
+          break;
+      case "specialization":
+          return searchBySpecialization(searchCriteria,searchQuery)
+      case "institute":
+          return searchByInstitute(searchCriteria,searchQuery)
+      default:
+          console.log("Invalid choice.");
+          break;
+    }
+  }
 
-  };
+  const handleSearchSuggestions  = (memberData: any) => {
+      setMembers(memberData);
+      const uniqueSuggestions = [...new Set(memberData.map((item: any) => item[searchCriteria]))];
+      const uniqueArray: any = uniqueSuggestions.map(value  => ({ [searchCriteria]: value  }));
+      setSuggestionList(uniqueArray)
+  }
 
-  const handleSearch = async (query: string) => {
-    setSearchQuery(query)
+   const handleSimpleSearch= async () => {
+     try {
+      const memberData: any = await handleMemberFilter(searchCriteria, searchQuery)
+      const memData:any= memberData?.data?.listMembers?.items;
+      handleSearchSuggestions(memData);     
+     } catch(error: any) {
+      console.log('error fetching members', error)
+     }
+   }
+
+   const handleSearchBySpecialization = async () => {
     try {
-      const memberData = await API.graphql<GraphQLQuery<ListMembersQuery>>(
-        { 
-          query: queries.listMembers,
-          variables: variables,
-          authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
-        }
-        );
-      if (memberData && memberData.data && memberData.data.listMembers && memberData.data.listMembers.items) {
-        const memData:any= memberData?.data?.listMembers?.items;
-        setMembers(memData);
-        const uniqueSuggestions = [...new Set(memData.map((item: any) => item[searchCriteria]))];
-        const uniqueArray: any = uniqueSuggestions.map(value  => ({ [searchCriteria]: value  }));
-        setSuggestionList(uniqueArray)
+     const memberData: any = await handleMemberFilter(searchCriteria, searchQuery)
+     const memData:any= memberData?.data?.listSpecializations?.items;
+     handleSearchSuggestions(memData);
+    } catch(error: any) {
+      console.log('error fetching members', error)
+    }
+  }
 
-      }
-    }catch (err) { console.log('error fetching members', err) }
+
+
+  const handleSearchByInstitute = async() => {
+    try {
+      const memberData: any = await handleMemberFilter(searchCriteria, searchQuery)
+      const memData:any= memberData?.data?.listProfessionalInstitutes?.items;
+      handleSearchSuggestions(memData);
+     } catch(error: any) {
+       console.log('error fetching members', error)
+     }
+  }
+
+
+  const filterSearch = async (query: string) => {
+    setSearchQuery(query)
+    if (searchCriteria === 'fullName' || searchCriteria === 'designation' || searchCriteria === 'currentWorkplace') {
+      handleSimpleSearch();
+    } else if (searchCriteria === 'specialization') {
+      handleSearchBySpecialization();
+    } else if (searchCriteria === 'institute') {
+      handleSearchByInstitute();
+    }
   }
 
   return (
@@ -99,11 +133,11 @@ const SearchPage = () => {
             <Col sm={9}>
               {" "}
               <SearchInput
-                // searchQuery={searchQuery}
                 handleInputChange={handleInputChange}
                 suggestionList={suggestionList}
-                handleSearch={handleSearch}
+                filterSearch={filterSearch}
                 searchCriteria={searchCriteria}
+                handleSearch={handleSearch}
               />
             </Col>
           </Container>
@@ -114,7 +148,7 @@ const SearchPage = () => {
         <Col md={12}>
           <Container className="mt-4">
             <Col sm={12}>
-              <SearchResultList searchResults={searchResults}  />
+              <SearchResultList searchResults={searchResults} searchCriteria={searchCriteria} />
             </Col>
           </Container>
         </Col>

@@ -1,13 +1,13 @@
 {
   "api": {
-    "slasscomemp": {
+    "slasscommem": {
       "dependsOn": [
         {
           "attributes": [
             "UserPoolId"
           ],
           "category": "auth",
-          "resourceName": "slasscomemp2f910844"
+          "resourceName": "slasscommem34d5901b"
         }
       ],
       "output": {
@@ -16,7 +16,7 @@
             {
               "authenticationType": "AMAZON_COGNITO_USER_POOLS",
               "userPoolConfig": {
-                "userPoolId": "authslasscomemp2f910844"
+                "userPoolId": "authslasscommem34d5901b"
               }
             }
           ],
@@ -33,7 +33,7 @@
     }
   },
   "auth": {
-    "slasscomemp2f910844": {
+    "slasscommem34d5901b": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -49,7 +49,9 @@
           "EMAIL"
         ],
         "socialProviders": [],
-        "usernameAttributes": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
         "verificationMechanisms": [
           "EMAIL"
         ]

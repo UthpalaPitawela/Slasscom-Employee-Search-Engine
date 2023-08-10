@@ -2,7 +2,7 @@ import { ButtonToolbar, Button } from "react-bootstrap";
 
 const SearchCriteria = (props: any) => {
   const buttons = [
-    { value: "name", text: "Name" },
+    { value: "fullName", text: "Name" },
     { value: "specialization", text: "Specialization" },
     { value: "designation", text: "Designation" },
     { value: "currentWorkplace", text: "Current Workplace" },

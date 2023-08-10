@@ -1,22 +1,22 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-slasscomemp-dev-124306-authRole",
-      "UnauthRoleArn": "arn:aws:iam::987628774156:role/amplify-slasscomemp-dev-124306-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::987628774156:role/amplify-slasscomemp-dev-124306-authRole",
-      "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-slasscomemp-dev-124306-deployment",
-      "UnauthRoleName": "amplify-slasscomemp-dev-124306-unauthRole",
-      "StackName": "amplify-slasscomemp-dev-124306",
-      "StackId": "arn:aws:cloudformation:us-east-1:987628774156:stack/amplify-slasscomemp-dev-124306/df90a8a0-303a-11ee-81c6-126254337b5d",
-      "AmplifyAppId": "d38l9npb5i53nu"
+      "AuthRoleName": "amplify-slasscommem-dev-230826-authRole",
+      "UnauthRoleArn": "arn:aws:iam::987628774156:role/amplify-slasscommem-dev-230826-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::987628774156:role/amplify-slasscommem-dev-230826-authRole",
+      "Region": "us-west-1",
+      "DeploymentBucketName": "amplify-slasscommem-dev-230826-deployment",
+      "UnauthRoleName": "amplify-slasscommem-dev-230826-unauthRole",
+      "StackName": "amplify-slasscommem-dev-230826",
+      "StackId": "arn:aws:cloudformation:us-west-1:987628774156:stack/amplify-slasscommem-dev-230826/8dc28fa0-36db-11ee-bf88-02628663314d",
+      "AmplifyAppId": "d2oq2w9avu9i6h"
     },
     "categories": {
-      "auth": {
-        "slasscomemp2f910844": {}
-      },
       "api": {
-        "slasscomemp": {}
+        "slasscommem": {}
+      },
+      "auth": {
+        "slasscommem34d5901b": {}
       }
     }
   }
