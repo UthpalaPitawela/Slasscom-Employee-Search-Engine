@@ -4,15 +4,15 @@ const { v4: uuidv4 } = require('uuid');
 
 // Configure AWS SDK
 AWS.config.update({
-  region: "us-east-1",
-  accessKeyId: "AKIA6L42DEMGHAYPWN4M",
-  secretAccessKey: "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"
+  region: process.env.REACT_APP_DYNAMODB_REGION,
+  accessKeyId: process.env.REACT_APP_ACCESS_KEY,
+  secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY
 });
 
 const DynamoDB = new AWS.DynamoDB.DocumentClient();
 
 // REST API endpoint URL
-const restEndpoint = "https://demo3211332.mockable.io/getMember"
+const restEndpoint = process.env.REACT_APP_REST_ENDPOINT
 
 async function fetchDataFromRestAPI() {
 
@@ -29,7 +29,7 @@ async function fetchDataFromRestAPI() {
 }
 
 async function seedDynamoDB(data) {
-  const tableName = "Member-ynrdvamykba6xegc6vzup4icxi-dev"
+  const tableName = process.env.REACT_APP_DYNAMODB_TABLE
 
   try {
     for (const item of data) {
