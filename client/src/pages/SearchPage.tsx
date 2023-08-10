@@ -104,7 +104,7 @@ const SearchPage = () => {
       <Row>
         <Col md={2}></Col>
         <Col>
-          <h1>Slasscom Employee Search</h1>
+          <h1>SLASSCOM Employee Search</h1>
         </Col>
       </Row>
       <Row>
