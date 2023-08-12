@@ -78,6 +78,11 @@ export const listMembers = /* GraphQL */ `
         currentWorkplace
         designation
         specialization {
+          items {
+            specialization {
+              specialization
+            }
+          }
           nextToken
           __typename
         }
