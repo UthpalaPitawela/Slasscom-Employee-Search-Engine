@@ -21,7 +21,8 @@ export const MemberResultsTitles: MemberResultsTitles = {
     designation: 'Designation',
     currentWorkplace:'Current Workplace',
     // specialization: 'Specialization',
-    profileSummary: 'Profile Summary'
+    profileSummary: 'Profile Summary',
+    nic: 'NIC Number'
 }
 
 

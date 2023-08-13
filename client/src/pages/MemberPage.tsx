@@ -12,7 +12,7 @@ const MemberPage = () => {
   const decodedMemData= memData? JSON.parse(decodeURIComponent(memData)): null;
   const {fullName ,...memberData} = decodedMemData || {};
   console.log('memberData', memberData)
-  const selectedMemFields = ['designation', 'currentWorkplace', 'profileSummary', 'previousWorkplaces'];
+  const selectedMemFields = ['designation', 'nic', 'currentWorkplace', 'profileSummary'];
   const memberObjData = Object.assign({}, ...selectedMemFields.map((memKey: any) => ({ [memKey]: memberData[memKey] })));
   
   const redirectToSearch = () => {

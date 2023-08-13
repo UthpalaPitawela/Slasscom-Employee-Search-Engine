@@ -35,15 +35,17 @@ const SearchPage = () => {
       case "fullName":
       case "designation":
       case "currentWorkplace":
-          return searchByMemberName(searchCriteria, searchQuery)
-          break;
+        return searchByMemberName(searchCriteria, searchQuery)
+        break;
       case "specialization":
-          return searchBySpecialization(searchCriteria,searchQuery)
+        return searchBySpecialization(searchCriteria,searchQuery)
+        break;
       case "institute":
-          return searchByInstitute(searchCriteria,searchQuery)
+        return searchByInstitute(searchCriteria,searchQuery)
+        break;
       default:
-          console.log("Invalid choice.");
-          break;
+        console.log("Invalid choice.");
+        break;
     }
   }
 
