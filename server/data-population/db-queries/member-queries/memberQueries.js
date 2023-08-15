@@ -3,12 +3,15 @@ const uuid = require("uuid");
 const {
   checkMemberExist,
   checkSpecializationExist,
+  checkProfInstituteExist,
 } = require("../validityChecks");
 const { savedb } = require("../dbQueries");
 const {
   MemberTable,
   SpecializationTable,
   MemberSpecializationTable,
+  ProfInstituteTable,
+  MemberProfInstitueTable,
 } = require("../../constants/tableNames");
 
 module.exports.insertDataIntoDynamoDB = async (data) => {
@@ -38,6 +41,11 @@ async function insertMemberIntoTable(employeeData) {
     );
 
     await Promise.all(specializationPromises);
+    const profInstitutePromises = professionalInstitutes.map((profInstitute ) => 
+      insertProfInstituteTable (profInstitute, memberData.id)
+    );
+
+    await Promise.all(profInstitutePromises);
   }
 }
 
@@ -68,4 +76,34 @@ async function insertSpecializationTable(specializedItem, memberId) {
     updatedAt: new Date().toISOString(),
   };
   savedb(MemberSpecializationTable, memberSpecializedData);
+}
+async function insertProfInstituteTable(profInstitute, memberId) {
+  let profInstituteId = ";";
+  const { exists, savedProfInstituteId } = await checkProfInstituteExist(
+    profInstitute
+  );
+  if (!exists) {
+    const profInstituteData = {
+      id: uuid.v4(),
+      institute: profInstitute.name,
+      title: profInstitute.title,
+      duration: profInstitute.duration,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    savedb(ProfInstituteTable, profInstituteData);
+    profInstituteId = savedProfInstituteId
+      ? savedProfInstituteId
+      : profInstituteData.id;
+  }
+
+  const memberProfInstituteData = {
+    id: uuid.v4(),
+    memberId: memberId,
+    specializationId: profInstituteId,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+  savedb(MemberProfInstitueTable, memberProfInstituteData);
 }

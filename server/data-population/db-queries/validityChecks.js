@@ -1,4 +1,4 @@
-const { MemberTable, SpecializationTable } = require("../constants/tableNames");
+const { MemberTable, SpecializationTable, ProfInstituteTable } = require("../constants/tableNames");
 const { dynamodb } = require("../utils/dbUtils");
 
 module.exports.checkMemberExist = async(nic) =>{
@@ -55,6 +55,40 @@ module.exports.checkSpecializationExist = async(specializedItem) =>{
     if (data.Items.length > 0) {
       console.log('Specialization exists', data.Items);
       return { exists: true, savedSpecializationId: data.Items[0].id }; // Return object indicating member exists
+    } else {
+      console.log('No specialization exists.');
+      return { exists: false }; // Return object indicating member doesn't exist
+    }
+  } catch (error) {
+    console.error('An error occurred during scan:', error);
+    return { exists: false, error: 'Scanning error' }; // Return object indicating scanning error
+  }
+}
+module.exports.checkProfInstituteExist = async(institute) =>{
+  try {
+    const scanParams = {
+      TableName: ProfInstituteTable,
+      FilterExpression: 'institute = :instituteValue AND title = :titleValue',
+      ExpressionAttributeValues: {
+        ':instituteValue': institute.name,
+        ':titleValue': institute.title
+
+      }
+    };
+    const data = await new Promise((resolve, reject) => {
+      dynamodb.scan(scanParams, (err, data) => {
+        if (err) {
+          reject(err); // Reject the Promise in case of an error
+        } else {
+          resolve(data); // Resolve with scan result
+        }
+      });
+    });
+    console.log('data', data)
+
+    if (data.Items.length > 0) {
+      console.log('Specialization exists', data.Items);
+      return { exists: true, savedProfInstituteId: data.Items[0].id }; // Return object indicating member exists
     } else {
       console.log('No specialization exists.');
       return { exists: false }; // Return object indicating member doesn't exist
