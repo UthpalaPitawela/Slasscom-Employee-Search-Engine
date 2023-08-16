@@ -41,7 +41,7 @@ module.exports.checkSpecializationExist = async(specializedItem) =>{
         ':valueToScan': specializedItem.specialization
       }
     };
-    const data = await new Promise((resolve, reject) => {
+    const specializedData = await new Promise((resolve, reject) => {
       dynamodb.scan(scanParams, (err, data) => {
         if (err) {
           reject(err); // Reject the Promise in case of an error
@@ -50,11 +50,10 @@ module.exports.checkSpecializationExist = async(specializedItem) =>{
         }
       });
     });
-    console.log('data', data)
 
-    if (data.Items.length > 0) {
-      console.log('Specialization exists', data.Items);
-      return { exists: true, savedSpecializationId: data.Items[0].id }; // Return object indicating member exists
+    if (specializedData && specializedData.Items && specializedData.Items.length>0) {
+      console.log('Specialization exists', specializedData.Items);
+      return { exists: true, savedSpecializationId: specializedData.Items[0].id }; // Return object indicating member exists
     } else {
       console.log('No specialization exists.');
       return { exists: false }; // Return object indicating member doesn't exist

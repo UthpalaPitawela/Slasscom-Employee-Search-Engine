@@ -3,6 +3,7 @@ const https = require('https');
 const uuid = require('uuid'); // Make sure to install the 'uuid' package if not already done
  
 const { insertDataIntoDynamoDB } = require('./db-queries/member-queries/memberQueries');
+const { handleSpecializationData } = require('./data-handlers/dataHandler');
 
 
 module.exports.populateData = async (event) => {
@@ -14,6 +15,7 @@ module.exports.populateData = async (event) => {
     ];
 
     const allData = await fetchDataFromAPI(urls);
+    await handleSpecializationData(allData[0]);
     await insertDataIntoDynamoDB(allData[0]);
 
     // Insert allData into DynamoDB or perform other actions
