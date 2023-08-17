@@ -68,7 +68,6 @@ function fetchDataFromSingleURL(url) {
 
 function processJsonData(jsonData) {
   const extractedData = jsonData.map((entry) => ({
-    // id: uuid.v4(),
     nic: entry.nic,
     fullName: entry.fullName,
     currentWorkplace: entry.currentWorkplace,
