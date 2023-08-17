@@ -6,14 +6,15 @@ import { MemberData } from "../../types/memberDataType";
 const SearchResultList = (props: any) => {
   const navigate = useNavigate();
   let  extractedMembers = props?.searchResults??[];
-  console.log('extractedMembers', extractedMembers)
-  if ((props.searchCriteria === 'specialization' || props.searchCriteria === 'institute') && 
+  if ((props.searchCriteria === 'specialization') && 
   (extractedMembers.length > 0 && extractedMembers[0].member && 
     extractedMembers[0].member.items && extractedMembers[0].member.items.length)) {
      
      extractedMembers = extractedMembers[0].member.items.map((item: any )=> item.member);
+  } else if (props.searchCriteria === 'institute') {
+    extractedMembers =  extractedMembers.map((item: any) => item.member)
+    console.log('extractedMembers    institute', extractedMembers)
   }
-
 
   const redirectMemberPage = (memberData: MemberData) => {
     const memData = JSON.stringify(memberData);

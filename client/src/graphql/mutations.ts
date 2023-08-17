@@ -53,7 +53,8 @@ export const createMember = /* GraphQL */ `
         items {
           id
           memberId
-          professionalInstituteId
+          title
+          institute
           createdAt
           updatedAt
           __typename
@@ -118,7 +119,8 @@ export const updateMember = /* GraphQL */ `
         items {
           id
           memberId
-          professionalInstituteId
+          title
+          institute
           createdAt
           updatedAt
           __typename
@@ -183,7 +185,8 @@ export const deleteMember = /* GraphQL */ `
         items {
           id
           memberId
-          professionalInstituteId
+          title
+          institute
           createdAt
           updatedAt
           __typename
@@ -282,6 +285,7 @@ export const createProfessionalInstitute = /* GraphQL */ `
   ) {
     createProfessionalInstitute(input: $input, condition: $condition) {
       id
+      memberId
       title
       institute
       duration {
@@ -290,15 +294,29 @@ export const createProfessionalInstitute = /* GraphQL */ `
         __typename
       }
       member {
-        items {
-          id
-          memberId
-          professionalInstituteId
-          createdAt
-          updatedAt
+        id
+        nic
+        fullName
+        currentWorkplace
+        designation
+        specialization {
+          nextToken
           __typename
         }
-        nextToken
+        profileSummary
+        contactDetails {
+          __typename
+        }
+        previousWorkplaces {
+          workplace
+          __typename
+        }
+        professionalInstitutes {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
         __typename
       }
       createdAt
@@ -314,6 +332,7 @@ export const updateProfessionalInstitute = /* GraphQL */ `
   ) {
     updateProfessionalInstitute(input: $input, condition: $condition) {
       id
+      memberId
       title
       institute
       duration {
@@ -322,15 +341,29 @@ export const updateProfessionalInstitute = /* GraphQL */ `
         __typename
       }
       member {
-        items {
-          id
-          memberId
-          professionalInstituteId
-          createdAt
-          updatedAt
+        id
+        nic
+        fullName
+        currentWorkplace
+        designation
+        specialization {
+          nextToken
           __typename
         }
-        nextToken
+        profileSummary
+        contactDetails {
+          __typename
+        }
+        previousWorkplaces {
+          workplace
+          __typename
+        }
+        professionalInstitutes {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
         __typename
       }
       createdAt
@@ -346,6 +379,7 @@ export const deleteProfessionalInstitute = /* GraphQL */ `
   ) {
     deleteProfessionalInstitute(input: $input, condition: $condition) {
       id
+      memberId
       title
       institute
       duration {
@@ -354,15 +388,29 @@ export const deleteProfessionalInstitute = /* GraphQL */ `
         __typename
       }
       member {
-        items {
-          id
-          memberId
-          professionalInstituteId
-          createdAt
-          updatedAt
+        id
+        nic
+        fullName
+        currentWorkplace
+        designation
+        specialization {
+          nextToken
           __typename
         }
-        nextToken
+        profileSummary
+        contactDetails {
+          __typename
+        }
+        previousWorkplaces {
+          workplace
+          __typename
+        }
+        professionalInstitutes {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
         __typename
       }
       createdAt
@@ -513,180 +561,6 @@ export const deleteMemberSpecialization = /* GraphQL */ `
       specialization {
         id
         specialization
-        member {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const createMemberProfInstitute = /* GraphQL */ `
-  mutation CreateMemberProfInstitute(
-    $input: CreateMemberProfInstituteInput!
-    $condition: ModelMemberProfInstituteConditionInput
-  ) {
-    createMemberProfInstitute(input: $input, condition: $condition) {
-      id
-      memberId
-      professionalInstituteId
-      member {
-        id
-        nic
-        fullName
-        currentWorkplace
-        designation
-        specialization {
-          nextToken
-          __typename
-        }
-        profileSummary
-        contactDetails {
-          __typename
-        }
-        previousWorkplaces {
-          workplace
-          __typename
-        }
-        professionalInstitutes {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      professionalInstitute {
-        id
-        title
-        institute
-        duration {
-          from
-          to
-          __typename
-        }
-        member {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const updateMemberProfInstitute = /* GraphQL */ `
-  mutation UpdateMemberProfInstitute(
-    $input: UpdateMemberProfInstituteInput!
-    $condition: ModelMemberProfInstituteConditionInput
-  ) {
-    updateMemberProfInstitute(input: $input, condition: $condition) {
-      id
-      memberId
-      professionalInstituteId
-      member {
-        id
-        nic
-        fullName
-        currentWorkplace
-        designation
-        specialization {
-          nextToken
-          __typename
-        }
-        profileSummary
-        contactDetails {
-          __typename
-        }
-        previousWorkplaces {
-          workplace
-          __typename
-        }
-        professionalInstitutes {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      professionalInstitute {
-        id
-        title
-        institute
-        duration {
-          from
-          to
-          __typename
-        }
-        member {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const deleteMemberProfInstitute = /* GraphQL */ `
-  mutation DeleteMemberProfInstitute(
-    $input: DeleteMemberProfInstituteInput!
-    $condition: ModelMemberProfInstituteConditionInput
-  ) {
-    deleteMemberProfInstitute(input: $input, condition: $condition) {
-      id
-      memberId
-      professionalInstituteId
-      member {
-        id
-        nic
-        fullName
-        currentWorkplace
-        designation
-        specialization {
-          nextToken
-          __typename
-        }
-        profileSummary
-        contactDetails {
-          __typename
-        }
-        previousWorkplaces {
-          workplace
-          __typename
-        }
-        professionalInstitutes {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      professionalInstitute {
-        id
-        title
-        institute
-        duration {
-          from
-          to
-          __typename
-        }
         member {
           nextToken
           __typename

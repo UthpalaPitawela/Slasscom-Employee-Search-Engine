@@ -23,14 +23,15 @@ const SearchPage = () => {
     setSelectedSuggestion(data[searchCriteria]);    
   }
   
-  const handleSearch = () => {
+  const filterSearchResultsForSuggestionSelection = () => {
     if (selectedSuggestion) {
       const results:any=  members?.filter((member: any) =>  {return member[searchCriteria] === selectedSuggestion})
+      console.log('results', results)
       setSearchResults(results);
     }     
   }
 
-  const handleMemberFilter = (searchCriteria: string, searchQuery: string) => {
+  const handleSearchBySearchCriteria = (searchCriteria: string, searchQuery: string) => {
     switch (searchCriteria) {
       case "fullName":
       case "designation":
@@ -50,6 +51,7 @@ const SearchPage = () => {
   }
 
   const handleSearchSuggestions  = (memberData: any) => {
+    console.log('memberData', memberData)
       setMembers(memberData);
       const uniqueSuggestions = [...new Set(memberData.map((item: any) => item[searchCriteria]))];
       const uniqueArray: any = uniqueSuggestions.map(value  => ({ [searchCriteria]: value  }));
@@ -58,7 +60,7 @@ const SearchPage = () => {
 
    const handleSimpleSearch= async () => {
      try {
-      const memberData: any = await handleMemberFilter(searchCriteria, searchQuery)
+      const memberData: any = await handleSearchBySearchCriteria(searchCriteria, searchQuery)
       const memData:any= memberData?.data?.listMembers?.items;
       handleSearchSuggestions(memData);     
      } catch(error: any) {
@@ -68,7 +70,7 @@ const SearchPage = () => {
 
    const handleSearchBySpecialization = async () => {
     try {
-     const memberData: any = await handleMemberFilter(searchCriteria, searchQuery)
+     const memberData: any = await handleSearchBySearchCriteria(searchCriteria, searchQuery)
      const memData:any= memberData?.data?.listSpecializations?.items;
      handleSearchSuggestions(memData);
     } catch(error: any) {
@@ -80,7 +82,7 @@ const SearchPage = () => {
 
   const handleSearchByInstitute = async() => {
     try {
-      const memberData: any = await handleMemberFilter(searchCriteria, searchQuery)
+      const memberData: any = await handleSearchBySearchCriteria(searchCriteria, searchQuery)
       const memData:any= memberData?.data?.listProfessionalInstitutes?.items;
       handleSearchSuggestions(memData);
      } catch(error: any) {
@@ -89,7 +91,7 @@ const SearchPage = () => {
   }
 
 
-  const filterSearch = async (query: string) => {
+  const handleSearchForSugggestions = async (query: string) => {
     setSearchQuery(query)
     if (searchCriteria === 'fullName' || searchCriteria === 'designation' || searchCriteria === 'currentWorkplace') {
       handleSimpleSearch();
@@ -137,9 +139,9 @@ const SearchPage = () => {
               <SearchInput
                 handleInputChange={handleInputChange}
                 suggestionList={suggestionList}
-                filterSearch={filterSearch}
+                handleSearchForSugggestions={handleSearchForSugggestions}
                 searchCriteria={searchCriteria}
-                handleSearch={handleSearch}
+                filterSearchResultsForSuggestionSelection={filterSearchResultsForSuggestionSelection}
               />
             </Col>
           </Container>
