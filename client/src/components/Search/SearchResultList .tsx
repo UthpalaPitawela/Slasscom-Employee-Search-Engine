@@ -20,7 +20,6 @@ const SearchResultList = (props: any) => {
      extractedMembers = extractedMembers[0].member.items.map((item: any )=> item.member);
   } else if (props.searchCriteria === 'institute') {
     extractedMembers =  extractedMembers.map((item: any) => item.member)
-    console.log('extractedMembers    institute', extractedMembers)
   }
 
   const startIndex = currentPage * ITEMS_PER_PAGE;
