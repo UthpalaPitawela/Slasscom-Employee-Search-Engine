@@ -27,8 +27,6 @@ const SearchInput = (props: any) => {
         </Button>
       </Col>
     </Row>
-
-    // </Container>
   );
 };
 

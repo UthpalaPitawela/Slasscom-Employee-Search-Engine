@@ -3,7 +3,6 @@ import { MemberPropType } from "../../types/propType";
 import { MemberResultsTitles } from "../../types/memberDataType";
 
 const MemberField = (props: MemberPropType) => {
-  // const key = props.resultLabel as String;
     return (
         <Row>
         <Col md={3}></Col>
