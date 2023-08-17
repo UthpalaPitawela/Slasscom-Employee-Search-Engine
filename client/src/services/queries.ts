@@ -1,7 +1,7 @@
 import * as queries from '../graphql/queries';
 import { GraphQLQuery, GRAPHQL_AUTH_MODE  } from '@aws-amplify/api';
 import { GetMemberQuery, ListMembersQuery, ListProfessionalInstitutesQuery, ListSpecializationsQuery } from "../API";
-import { getMemberByIdVariableFormat, getSimpleVariableFormat, getSpecializationVariableFormat,getInstitueVariableFormat } from './queryVariables';
+import { getMemberByIdVariableFormat, getSimpleVariableFormat, getSpecializationVariableFormat,getInstitueVariableFormat, getDesignationSuggestionVariableFormat } from './queryVariables';
 import { API, Amplify} from "aws-amplify";
 import { getAwsConfig } from "../utils/getAwsConfig";
 
@@ -46,4 +46,16 @@ export const getMemberById = async (memberId: string) => {
         }
         );
     return memberData;
+}
+
+export const getDesignationSuggestions = async () => {
+  const designationSuggestions: any = await API.graphql<GraphQLQuery<ListMembersQuery>>(
+    { 
+      query: queries.listMembers,
+      variables: getDesignationSuggestionVariableFormat(),
+      authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
+    }
+    );
+    console.log('designationSuggestions', designationSuggestions)
+  return designationSuggestions;
 }

@@ -40,3 +40,14 @@ export const getMemberByIdVariableFormat = (memberId: string) => {
     }
     return variables;
 }
+
+export const getDesignationSuggestionVariableFormat = () => {
+  const variables: any = {
+      filter: {
+        fields: {
+          designation: true
+        }
+      }
+  }
+  return variables;
+}
