@@ -16,7 +16,7 @@ type Member @model @auth(rules: [{ allow: groups, groups: ["us-west-1_v0aFDJrPf_
   profileSummary: String
   contactDetails: ContactDetails
   previousWorkplaces: [PreviousWorkplace]
-  professionalInstitutes: [ProfessionalInstitute]  @manyToMany (relationName: "MemberProfInstitute")
+  professionalInstitutes: [ProfessionalInstitute]  @hasMany(indexName: "byProfInstitute", fields: ["id"])
 }
 
 type Specialization @model @auth(rules: [{ allow: groups, groups: ["us-west-1_v0aFDJrPf_SlasscomIdpWso2", "us-west-1_v0aFDJrPf_SlasscomIdp99x"] }]){
@@ -53,10 +53,11 @@ type Designation {
 
 type ProfessionalInstitute @model @auth(rules: [{ allow: groups, groups: ["us-west-1_v0aFDJrPf_SlasscomIdpWso2", "us-west-1_v0aFDJrPf_SlasscomIdp99x"] }]) {
   id: ID!
+  memberId: ID! @index(name: "byProfInstitute")
   title: String
   institute: String
   duration: ProfessionalInstituteDuration
-  member: [Member]  @manyToMany (relationName: "MemberProfInstitute")
+  member: Member  @belongsTo(fields: ["memberId"])
 }
 
 type ProfessionalInstituteDuration {

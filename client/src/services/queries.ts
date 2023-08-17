@@ -33,12 +33,13 @@ export const searchByInstitute = async (searchCriteria: string, searchQuery: str
   console.log('searchQuery=====================', searchQuery)
   console.log('searchCriteria====================', searchCriteria)
     const memberData: any = await API.graphql<GraphQLQuery<ListProfessionalInstitutesQuery>>(
-        { 
-          query: queries.listProfessionalInstitutes,
-          variables: getInstitueVariableFormat(searchCriteria,searchQuery),
-          authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
-        }
-        );
+      { 
+        query: queries.listProfessionalInstitutes,
+        variables: getInstitueVariableFormat(searchCriteria,searchQuery),
+        authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
+      }
+      );
+      console.log('memberData', memberData)
     return memberData;
 }
 export const getMemberById = async (memberId: string) => {

@@ -50,7 +50,8 @@ export const getMember = /* GraphQL */ `
         items {
           id
           memberId
-          professionalInstituteId
+          title
+          institute
           createdAt
           updatedAt
           __typename
@@ -78,11 +79,6 @@ export const listMembers = /* GraphQL */ `
         currentWorkplace
         designation
         specialization {
-          items {
-            specialization {
-              specialization
-            }
-          }
           nextToken
           __typename
         }
@@ -143,11 +139,11 @@ export const listSpecializations = /* GraphQL */ `
         member {
           items {
             member {
-              currentWorkplace
-              designation
-              fullName
-              id
               nic
+              id
+              fullName
+              designation
+              currentWorkplace
               profileSummary
             }
           }
@@ -167,6 +163,7 @@ export const getProfessionalInstitute = /* GraphQL */ `
   query GetProfessionalInstitute($id: ID!) {
     getProfessionalInstitute(id: $id) {
       id
+      memberId
       title
       institute
       duration {
@@ -175,15 +172,29 @@ export const getProfessionalInstitute = /* GraphQL */ `
         __typename
       }
       member {
-        items {
-          id
-          memberId
-          professionalInstituteId
-          createdAt
-          updatedAt
+        id
+        nic
+        fullName
+        currentWorkplace
+        designation
+        specialization {
+          nextToken
           __typename
         }
-        nextToken
+        profileSummary
+        contactDetails {
+          __typename
+        }
+        previousWorkplaces {
+          workplace
+          __typename
+        }
+        professionalInstitutes {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
         __typename
       }
       createdAt
@@ -205,6 +216,7 @@ export const listProfessionalInstitutes = /* GraphQL */ `
     ) {
       items {
         id
+        memberId
         title
         institute
         duration {
@@ -213,17 +225,59 @@ export const listProfessionalInstitutes = /* GraphQL */ `
           __typename
         }
         member {
-          items {
-            member {
-              currentWorkplace
-              designation
-              fullName
-              nic
-              profileSummary
-              id
-            }
-          }
-          nextToken
+          id
+          nic
+          fullName
+          currentWorkplace
+          designation
+          profileSummary
+          createdAt
+          updatedAt
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const professionalInstitutesByMemberId = /* GraphQL */ `
+  query ProfessionalInstitutesByMemberId(
+    $memberId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelProfessionalInstituteFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    professionalInstitutesByMemberId(
+      memberId: $memberId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        memberId
+        title
+        institute
+        duration {
+          from
+          to
+          __typename
+        }
+        member {
+          id
+          nic
+          fullName
+          currentWorkplace
+          designation
+          profileSummary
+          createdAt
+          updatedAt
           __typename
         }
         createdAt
@@ -405,198 +459,6 @@ export const memberSpecializationsBySpecializationId = /* GraphQL */ `
         specialization {
           id
           specialization
-          createdAt
-          updatedAt
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const getMemberProfInstitute = /* GraphQL */ `
-  query GetMemberProfInstitute($id: ID!) {
-    getMemberProfInstitute(id: $id) {
-      id
-      memberId
-      professionalInstituteId
-      member {
-        id
-        nic
-        fullName
-        currentWorkplace
-        designation
-        specialization {
-          nextToken
-          __typename
-        }
-        profileSummary
-        contactDetails {
-          __typename
-        }
-        previousWorkplaces {
-          workplace
-          __typename
-        }
-        professionalInstitutes {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      professionalInstitute {
-        id
-        title
-        institute
-        duration {
-          from
-          to
-          __typename
-        }
-        member {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const listMemberProfInstitutes = /* GraphQL */ `
-  query ListMemberProfInstitutes(
-    $filter: ModelMemberProfInstituteFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listMemberProfInstitutes(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        memberId
-        professionalInstituteId
-        member {
-          id
-          nic
-          fullName
-          currentWorkplace
-          designation
-          profileSummary
-          createdAt
-          updatedAt
-          __typename
-        }
-        professionalInstitute {
-          id
-          title
-          institute
-          createdAt
-          updatedAt
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const memberProfInstitutesByMemberId = /* GraphQL */ `
-  query MemberProfInstitutesByMemberId(
-    $memberId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelMemberProfInstituteFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    memberProfInstitutesByMemberId(
-      memberId: $memberId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        memberId
-        professionalInstituteId
-        member {
-          id
-          nic
-          fullName
-          currentWorkplace
-          designation
-          profileSummary
-          createdAt
-          updatedAt
-          __typename
-        }
-        professionalInstitute {
-          id
-          title
-          institute
-          createdAt
-          updatedAt
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const memberProfInstitutesByProfessionalInstituteId = /* GraphQL */ `
-  query MemberProfInstitutesByProfessionalInstituteId(
-    $professionalInstituteId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelMemberProfInstituteFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    memberProfInstitutesByProfessionalInstituteId(
-      professionalInstituteId: $professionalInstituteId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        memberId
-        professionalInstituteId
-        member {
-          id
-          nic
-          fullName
-          currentWorkplace
-          designation
-          profileSummary
-          createdAt
-          updatedAt
-          __typename
-        }
-        professionalInstitute {
-          id
-          title
-          institute
           createdAt
           updatedAt
           __typename

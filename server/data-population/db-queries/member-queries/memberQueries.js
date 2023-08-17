@@ -1,26 +1,50 @@
 "use strict";
-const uuid = require("uuid");
-const {
-  checkMemberExist,
-  checkSpecializationExist,
-  checkProfInstituteExist,
-} = require("../validityChecks");
 const { savedb, getIdBySpecialization } = require("../dbQueries");
 const {
   MemberTable,
   SpecializationTable,
   MemberSpecializationTable,
   ProfInstituteTable,
-  MemberProfInstitueTable,
 } = require("../../constants/tableNames");
-const { getCurrentDate } = require("../../utils/dateUtils");
+const { createMemberData, createMemberSpecializedData, createProfInstituteData } = require("../../utils/dataUtils");
 
 module.exports.insertDataIntoDynamoDB = async (data) => {
   const employeePromises = data.map(insertMemberIntoTable);
   await Promise.all(employeePromises);
 };
 
-async function insertMemberIntoTable(employeeData) {
+const insertMemberIntoTable = async (employeeData) => {
+  const {memberDataWithoutId, specialization, professionalInstitutes} = extractMemberDataWithoutId(employeeData);
+  const memberData = createMemberData(memberDataWithoutId);
+  await savedb(MemberTable, memberData);
+
+  const specializationPromises = specialization.map((specializedItem) =>
+    insertSpecializationTable(memberData.id, specializedItem)
+  );
+  await Promise.all(specializationPromises);
+  
+  const profInstitutePromises = professionalInstitutes.map((profInstitute) =>
+    insertProfInstituteTable(memberData.id, profInstitute)
+  );
+  await Promise.all(profInstitutePromises);
+};
+
+const insertSpecializationTable = async ( memberId , specializedItem) => {
+  const specializationId = await getIdBySpecialization(
+    SpecializationTable,
+    specializedItem.specialization
+  );
+
+  const memberSpecializedData = createMemberSpecializedData(memberId, specializationId);
+  await savedb(MemberSpecializationTable, memberSpecializedData);
+};
+
+const insertProfInstituteTable = async ( memberId, profInstitute) => {
+  const profInstituteData = createProfInstituteData(memberId, profInstitute);
+  await savedb(ProfInstituteTable, profInstituteData);
+};
+
+const extractMemberDataWithoutId = (employeeData) => {
   const {
     id,
     specialization,
@@ -28,69 +52,5 @@ async function insertMemberIntoTable(employeeData) {
     contactDetails,
     ...memberDataWithoutId
   } = employeeData;
-  const isMemberExist = await checkMemberExist(memberDataWithoutId.nic);
-  if (!isMemberExist.exists) {
-    const memberData = {
-      ...memberDataWithoutId,
-      id: uuid.v4(),
-      createdAt: getCurrentDate(),
-      updatedAt: getCurrentDate(),
-    };
-    await savedb(MemberTable, memberData);
-    const specializationPromises = specialization.map((specializedItem ) => 
-      insertSpecializationTable (specializedItem, memberData.id)
-    );
-
-    await Promise.all(specializationPromises);
-    const profInstitutePromises = professionalInstitutes.map((profInstitute ) => 
-      insertProfInstituteTable (profInstitute, memberData.id)
-    );
-
-    await Promise.all(profInstitutePromises);
-  }
-}
-
-async function insertSpecializationTable(specializedItem, memberId) {
-  const specializationId = await getIdBySpecialization(SpecializationTable, specializedItem.specialization)
-  console.log('specializationId', specializationId)
-  const memberSpecializedData = {
-    id: uuid.v4(),
-    memberId: memberId,
-    specializationId: specializationId,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-  await savedb(MemberSpecializationTable, memberSpecializedData);
-}
-
-
-async function insertProfInstituteTable(profInstitute, memberId) {
-  // let profInstituteId = "";
-  // const { exists, savedProfInstituteId } = await checkProfInstituteExist(
-  //   profInstitute
-  // );
-  // if (!exists) {
-    const profInstituteData = {
-      id: uuid.v4(),
-      institute: profInstitute.name,
-      title: profInstitute.title,
-      duration: profInstitute.duration,
-      createdAt: getCurrentDate(),
-      updatedAt: getCurrentDate(),
-    };
-
-    await savedb(ProfInstituteTable, profInstituteData);
-    // profInstituteId = savedProfInstituteId
-    //   ? savedProfInstituteId
-    //   : profInstituteData.id;
-  // }
-
-  const memberProfInstituteData = {
-    id: uuid.v4(),
-    memberId: memberId,
-    specializationId: profInstituteData.id,
-    createdAt: getCurrentDate(),
-    updatedAt: getCurrentDate(),
-  };
-  await savedb(MemberProfInstitueTable, memberProfInstituteData);
-}
+  return {specialization, professionalInstitutes, memberDataWithoutId};
+};

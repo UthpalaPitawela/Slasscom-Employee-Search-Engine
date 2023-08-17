@@ -101,7 +101,7 @@ export type Member = {
   profileSummary?: string | null,
   contactDetails?: ContactDetails | null,
   previousWorkplaces?:  Array<PreviousWorkplace | null > | null,
-  professionalInstitutes?: ModelMemberProfInstituteConnection | null,
+  professionalInstitutes?: ModelProfessionalInstituteConnection | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -163,30 +163,20 @@ export type Designation = {
   to?: string | null,
 };
 
-export type ModelMemberProfInstituteConnection = {
-  __typename: "ModelMemberProfInstituteConnection",
-  items:  Array<MemberProfInstitute | null >,
+export type ModelProfessionalInstituteConnection = {
+  __typename: "ModelProfessionalInstituteConnection",
+  items:  Array<ProfessionalInstitute | null >,
   nextToken?: string | null,
-};
-
-export type MemberProfInstitute = {
-  __typename: "MemberProfInstitute",
-  id: string,
-  memberId: string,
-  professionalInstituteId: string,
-  member: Member,
-  professionalInstitute: ProfessionalInstitute,
-  createdAt: string,
-  updatedAt: string,
 };
 
 export type ProfessionalInstitute = {
   __typename: "ProfessionalInstitute",
   id: string,
+  memberId: string,
   title?: string | null,
   institute?: string | null,
   duration?: ProfessionalInstituteDuration | null,
-  member?: ModelMemberProfInstituteConnection | null,
+  member?: Member | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -235,6 +225,7 @@ export type DeleteSpecializationInput = {
 
 export type CreateProfessionalInstituteInput = {
   id?: string | null,
+  memberId: string,
   title?: string | null,
   institute?: string | null,
   duration?: ProfessionalInstituteDurationInput | null,
@@ -246,6 +237,7 @@ export type ProfessionalInstituteDurationInput = {
 };
 
 export type ModelProfessionalInstituteConditionInput = {
+  memberId?: ModelIDInput | null,
   title?: ModelStringInput | null,
   institute?: ModelStringInput | null,
   and?: Array< ModelProfessionalInstituteConditionInput | null > | null,
@@ -253,8 +245,25 @@ export type ModelProfessionalInstituteConditionInput = {
   not?: ModelProfessionalInstituteConditionInput | null,
 };
 
+export type ModelIDInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+  size?: ModelSizeInput | null,
+};
+
 export type UpdateProfessionalInstituteInput = {
   id: string,
+  memberId?: string | null,
   title?: string | null,
   institute?: string | null,
   duration?: ProfessionalInstituteDurationInput | null,
@@ -278,22 +287,6 @@ export type ModelMemberSpecializationConditionInput = {
   not?: ModelMemberSpecializationConditionInput | null,
 };
 
-export type ModelIDInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-  size?: ModelSizeInput | null,
-};
-
 export type UpdateMemberSpecializationInput = {
   id: string,
   memberId?: string | null,
@@ -301,30 +294,6 @@ export type UpdateMemberSpecializationInput = {
 };
 
 export type DeleteMemberSpecializationInput = {
-  id: string,
-};
-
-export type CreateMemberProfInstituteInput = {
-  id?: string | null,
-  memberId: string,
-  professionalInstituteId: string,
-};
-
-export type ModelMemberProfInstituteConditionInput = {
-  memberId?: ModelIDInput | null,
-  professionalInstituteId?: ModelIDInput | null,
-  and?: Array< ModelMemberProfInstituteConditionInput | null > | null,
-  or?: Array< ModelMemberProfInstituteConditionInput | null > | null,
-  not?: ModelMemberProfInstituteConditionInput | null,
-};
-
-export type UpdateMemberProfInstituteInput = {
-  id: string,
-  memberId?: string | null,
-  professionalInstituteId?: string | null,
-};
-
-export type DeleteMemberProfInstituteInput = {
   id: string,
 };
 
@@ -362,26 +331,12 @@ export type ModelSpecializationConnection = {
 
 export type ModelProfessionalInstituteFilterInput = {
   id?: ModelIDInput | null,
+  memberId?: ModelIDInput | null,
   title?: ModelStringInput | null,
   institute?: ModelStringInput | null,
   and?: Array< ModelProfessionalInstituteFilterInput | null > | null,
   or?: Array< ModelProfessionalInstituteFilterInput | null > | null,
   not?: ModelProfessionalInstituteFilterInput | null,
-};
-
-export type ModelProfessionalInstituteConnection = {
-  __typename: "ModelProfessionalInstituteConnection",
-  items:  Array<ProfessionalInstitute | null >,
-  nextToken?: string | null,
-};
-
-export type ModelMemberSpecializationFilterInput = {
-  id?: ModelIDInput | null,
-  memberId?: ModelIDInput | null,
-  specializationId?: ModelIDInput | null,
-  and?: Array< ModelMemberSpecializationFilterInput | null > | null,
-  or?: Array< ModelMemberSpecializationFilterInput | null > | null,
-  not?: ModelMemberSpecializationFilterInput | null,
 };
 
 export enum ModelSortDirection {
@@ -390,13 +345,13 @@ export enum ModelSortDirection {
 }
 
 
-export type ModelMemberProfInstituteFilterInput = {
+export type ModelMemberSpecializationFilterInput = {
   id?: ModelIDInput | null,
   memberId?: ModelIDInput | null,
-  professionalInstituteId?: ModelIDInput | null,
-  and?: Array< ModelMemberProfInstituteFilterInput | null > | null,
-  or?: Array< ModelMemberProfInstituteFilterInput | null > | null,
-  not?: ModelMemberProfInstituteFilterInput | null,
+  specializationId?: ModelIDInput | null,
+  and?: Array< ModelMemberSpecializationFilterInput | null > | null,
+  or?: Array< ModelMemberSpecializationFilterInput | null > | null,
+  not?: ModelMemberSpecializationFilterInput | null,
 };
 
 export type ModelSubscriptionMemberFilterInput = {
@@ -449,6 +404,7 @@ export type ModelSubscriptionSpecializationFilterInput = {
 
 export type ModelSubscriptionProfessionalInstituteFilterInput = {
   id?: ModelSubscriptionIDInput | null,
+  memberId?: ModelSubscriptionIDInput | null,
   title?: ModelSubscriptionStringInput | null,
   institute?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionProfessionalInstituteFilterInput | null > | null,
@@ -461,14 +417,6 @@ export type ModelSubscriptionMemberSpecializationFilterInput = {
   specializationId?: ModelSubscriptionIDInput | null,
   and?: Array< ModelSubscriptionMemberSpecializationFilterInput | null > | null,
   or?: Array< ModelSubscriptionMemberSpecializationFilterInput | null > | null,
-};
-
-export type ModelSubscriptionMemberProfInstituteFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
-  memberId?: ModelSubscriptionIDInput | null,
-  professionalInstituteId?: ModelSubscriptionIDInput | null,
-  and?: Array< ModelSubscriptionMemberProfInstituteFilterInput | null > | null,
-  or?: Array< ModelSubscriptionMemberProfInstituteFilterInput | null > | null,
 };
 
 export type CreateMemberMutationVariables = {
@@ -521,12 +469,13 @@ export type CreateMemberMutation = {
       } | null > | null,
     } | null > | null,
     professionalInstitutes?:  {
-      __typename: "ModelMemberProfInstituteConnection",
+      __typename: "ModelProfessionalInstituteConnection",
       items:  Array< {
-        __typename: "MemberProfInstitute",
+        __typename: "ProfessionalInstitute",
         id: string,
         memberId: string,
-        professionalInstituteId: string,
+        title?: string | null,
+        institute?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null >,
@@ -587,12 +536,13 @@ export type UpdateMemberMutation = {
       } | null > | null,
     } | null > | null,
     professionalInstitutes?:  {
-      __typename: "ModelMemberProfInstituteConnection",
+      __typename: "ModelProfessionalInstituteConnection",
       items:  Array< {
-        __typename: "MemberProfInstitute",
+        __typename: "ProfessionalInstitute",
         id: string,
         memberId: string,
-        professionalInstituteId: string,
+        title?: string | null,
+        institute?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null >,
@@ -653,12 +603,13 @@ export type DeleteMemberMutation = {
       } | null > | null,
     } | null > | null,
     professionalInstitutes?:  {
-      __typename: "ModelMemberProfInstituteConnection",
+      __typename: "ModelProfessionalInstituteConnection",
       items:  Array< {
-        __typename: "MemberProfInstitute",
+        __typename: "ProfessionalInstitute",
         id: string,
         memberId: string,
-        professionalInstituteId: string,
+        title?: string | null,
+        institute?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null >,
@@ -759,6 +710,7 @@ export type CreateProfessionalInstituteMutation = {
   createProfessionalInstitute?:  {
     __typename: "ProfessionalInstitute",
     id: string,
+    memberId: string,
     title?: string | null,
     institute?: string | null,
     duration?:  {
@@ -767,16 +719,30 @@ export type CreateProfessionalInstituteMutation = {
       to?: string | null,
     } | null,
     member?:  {
-      __typename: "ModelMemberProfInstituteConnection",
-      items:  Array< {
-        __typename: "MemberProfInstitute",
-        id: string,
-        memberId: string,
-        professionalInstituteId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
+      __typename: "Member",
+      id: string,
+      nic: string,
+      fullName: string,
+      currentWorkplace: string,
+      designation: string,
+      specialization?:  {
+        __typename: "ModelMemberSpecializationConnection",
+        nextToken?: string | null,
+      } | null,
+      profileSummary?: string | null,
+      contactDetails?:  {
+        __typename: "ContactDetails",
+      } | null,
+      previousWorkplaces?:  Array< {
+        __typename: "PreviousWorkplace",
+        workplace?: string | null,
+      } | null > | null,
+      professionalInstitutes?:  {
+        __typename: "ModelProfessionalInstituteConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -792,6 +758,7 @@ export type UpdateProfessionalInstituteMutation = {
   updateProfessionalInstitute?:  {
     __typename: "ProfessionalInstitute",
     id: string,
+    memberId: string,
     title?: string | null,
     institute?: string | null,
     duration?:  {
@@ -800,16 +767,30 @@ export type UpdateProfessionalInstituteMutation = {
       to?: string | null,
     } | null,
     member?:  {
-      __typename: "ModelMemberProfInstituteConnection",
-      items:  Array< {
-        __typename: "MemberProfInstitute",
-        id: string,
-        memberId: string,
-        professionalInstituteId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
+      __typename: "Member",
+      id: string,
+      nic: string,
+      fullName: string,
+      currentWorkplace: string,
+      designation: string,
+      specialization?:  {
+        __typename: "ModelMemberSpecializationConnection",
+        nextToken?: string | null,
+      } | null,
+      profileSummary?: string | null,
+      contactDetails?:  {
+        __typename: "ContactDetails",
+      } | null,
+      previousWorkplaces?:  Array< {
+        __typename: "PreviousWorkplace",
+        workplace?: string | null,
+      } | null > | null,
+      professionalInstitutes?:  {
+        __typename: "ModelProfessionalInstituteConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -825,6 +806,7 @@ export type DeleteProfessionalInstituteMutation = {
   deleteProfessionalInstitute?:  {
     __typename: "ProfessionalInstitute",
     id: string,
+    memberId: string,
     title?: string | null,
     institute?: string | null,
     duration?:  {
@@ -833,16 +815,30 @@ export type DeleteProfessionalInstituteMutation = {
       to?: string | null,
     } | null,
     member?:  {
-      __typename: "ModelMemberProfInstituteConnection",
-      items:  Array< {
-        __typename: "MemberProfInstitute",
-        id: string,
-        memberId: string,
-        professionalInstituteId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
+      __typename: "Member",
+      id: string,
+      nic: string,
+      fullName: string,
+      currentWorkplace: string,
+      designation: string,
+      specialization?:  {
+        __typename: "ModelMemberSpecializationConnection",
+        nextToken?: string | null,
+      } | null,
+      profileSummary?: string | null,
+      contactDetails?:  {
+        __typename: "ContactDetails",
+      } | null,
+      previousWorkplaces?:  Array< {
+        __typename: "PreviousWorkplace",
+        workplace?: string | null,
+      } | null > | null,
+      professionalInstitutes?:  {
+        __typename: "ModelProfessionalInstituteConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -880,7 +876,7 @@ export type CreateMemberSpecializationMutation = {
         workplace?: string | null,
       } | null > | null,
       professionalInstitutes?:  {
-        __typename: "ModelMemberProfInstituteConnection",
+        __typename: "ModelProfessionalInstituteConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -933,7 +929,7 @@ export type UpdateMemberSpecializationMutation = {
         workplace?: string | null,
       } | null > | null,
       professionalInstitutes?:  {
-        __typename: "ModelMemberProfInstituteConnection",
+        __typename: "ModelProfessionalInstituteConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -986,7 +982,7 @@ export type DeleteMemberSpecializationMutation = {
         workplace?: string | null,
       } | null > | null,
       professionalInstitutes?:  {
-        __typename: "ModelMemberProfInstituteConnection",
+        __typename: "ModelProfessionalInstituteConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -998,183 +994,6 @@ export type DeleteMemberSpecializationMutation = {
       specialization?: string | null,
       member?:  {
         __typename: "ModelMemberSpecializationConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type CreateMemberProfInstituteMutationVariables = {
-  input: CreateMemberProfInstituteInput,
-  condition?: ModelMemberProfInstituteConditionInput | null,
-};
-
-export type CreateMemberProfInstituteMutation = {
-  createMemberProfInstitute?:  {
-    __typename: "MemberProfInstitute",
-    id: string,
-    memberId: string,
-    professionalInstituteId: string,
-    member:  {
-      __typename: "Member",
-      id: string,
-      nic: string,
-      fullName: string,
-      currentWorkplace: string,
-      designation: string,
-      specialization?:  {
-        __typename: "ModelMemberSpecializationConnection",
-        nextToken?: string | null,
-      } | null,
-      profileSummary?: string | null,
-      contactDetails?:  {
-        __typename: "ContactDetails",
-      } | null,
-      previousWorkplaces?:  Array< {
-        __typename: "PreviousWorkplace",
-        workplace?: string | null,
-      } | null > | null,
-      professionalInstitutes?:  {
-        __typename: "ModelMemberProfInstituteConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    professionalInstitute:  {
-      __typename: "ProfessionalInstitute",
-      id: string,
-      title?: string | null,
-      institute?: string | null,
-      duration?:  {
-        __typename: "ProfessionalInstituteDuration",
-        from?: string | null,
-        to?: string | null,
-      } | null,
-      member?:  {
-        __typename: "ModelMemberProfInstituteConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type UpdateMemberProfInstituteMutationVariables = {
-  input: UpdateMemberProfInstituteInput,
-  condition?: ModelMemberProfInstituteConditionInput | null,
-};
-
-export type UpdateMemberProfInstituteMutation = {
-  updateMemberProfInstitute?:  {
-    __typename: "MemberProfInstitute",
-    id: string,
-    memberId: string,
-    professionalInstituteId: string,
-    member:  {
-      __typename: "Member",
-      id: string,
-      nic: string,
-      fullName: string,
-      currentWorkplace: string,
-      designation: string,
-      specialization?:  {
-        __typename: "ModelMemberSpecializationConnection",
-        nextToken?: string | null,
-      } | null,
-      profileSummary?: string | null,
-      contactDetails?:  {
-        __typename: "ContactDetails",
-      } | null,
-      previousWorkplaces?:  Array< {
-        __typename: "PreviousWorkplace",
-        workplace?: string | null,
-      } | null > | null,
-      professionalInstitutes?:  {
-        __typename: "ModelMemberProfInstituteConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    professionalInstitute:  {
-      __typename: "ProfessionalInstitute",
-      id: string,
-      title?: string | null,
-      institute?: string | null,
-      duration?:  {
-        __typename: "ProfessionalInstituteDuration",
-        from?: string | null,
-        to?: string | null,
-      } | null,
-      member?:  {
-        __typename: "ModelMemberProfInstituteConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type DeleteMemberProfInstituteMutationVariables = {
-  input: DeleteMemberProfInstituteInput,
-  condition?: ModelMemberProfInstituteConditionInput | null,
-};
-
-export type DeleteMemberProfInstituteMutation = {
-  deleteMemberProfInstitute?:  {
-    __typename: "MemberProfInstitute",
-    id: string,
-    memberId: string,
-    professionalInstituteId: string,
-    member:  {
-      __typename: "Member",
-      id: string,
-      nic: string,
-      fullName: string,
-      currentWorkplace: string,
-      designation: string,
-      specialization?:  {
-        __typename: "ModelMemberSpecializationConnection",
-        nextToken?: string | null,
-      } | null,
-      profileSummary?: string | null,
-      contactDetails?:  {
-        __typename: "ContactDetails",
-      } | null,
-      previousWorkplaces?:  Array< {
-        __typename: "PreviousWorkplace",
-        workplace?: string | null,
-      } | null > | null,
-      professionalInstitutes?:  {
-        __typename: "ModelMemberProfInstituteConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    professionalInstitute:  {
-      __typename: "ProfessionalInstitute",
-      id: string,
-      title?: string | null,
-      institute?: string | null,
-      duration?:  {
-        __typename: "ProfessionalInstituteDuration",
-        from?: string | null,
-        to?: string | null,
-      } | null,
-      member?:  {
-        __typename: "ModelMemberProfInstituteConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -1234,12 +1053,13 @@ export type GetMemberQuery = {
       } | null > | null,
     } | null > | null,
     professionalInstitutes?:  {
-      __typename: "ModelMemberProfInstituteConnection",
+      __typename: "ModelProfessionalInstituteConnection",
       items:  Array< {
-        __typename: "MemberProfInstitute",
+        __typename: "ProfessionalInstitute",
         id: string,
         memberId: string,
-        professionalInstituteId: string,
+        title?: string | null,
+        institute?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null >,
@@ -1279,7 +1099,7 @@ export type ListMembersQuery = {
         workplace?: string | null,
       } | null > | null,
       professionalInstitutes?:  {
-        __typename: "ModelMemberProfInstituteConnection",
+        __typename: "ModelProfessionalInstituteConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -1347,6 +1167,7 @@ export type GetProfessionalInstituteQuery = {
   getProfessionalInstitute?:  {
     __typename: "ProfessionalInstitute",
     id: string,
+    memberId: string,
     title?: string | null,
     institute?: string | null,
     duration?:  {
@@ -1355,16 +1176,30 @@ export type GetProfessionalInstituteQuery = {
       to?: string | null,
     } | null,
     member?:  {
-      __typename: "ModelMemberProfInstituteConnection",
-      items:  Array< {
-        __typename: "MemberProfInstitute",
-        id: string,
-        memberId: string,
-        professionalInstituteId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
+      __typename: "Member",
+      id: string,
+      nic: string,
+      fullName: string,
+      currentWorkplace: string,
+      designation: string,
+      specialization?:  {
+        __typename: "ModelMemberSpecializationConnection",
+        nextToken?: string | null,
+      } | null,
+      profileSummary?: string | null,
+      contactDetails?:  {
+        __typename: "ContactDetails",
+      } | null,
+      previousWorkplaces?:  Array< {
+        __typename: "PreviousWorkplace",
+        workplace?: string | null,
+      } | null > | null,
+      professionalInstitutes?:  {
+        __typename: "ModelProfessionalInstituteConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1383,6 +1218,7 @@ export type ListProfessionalInstitutesQuery = {
     items:  Array< {
       __typename: "ProfessionalInstitute",
       id: string,
+      memberId: string,
       title?: string | null,
       institute?: string | null,
       duration?:  {
@@ -1391,8 +1227,55 @@ export type ListProfessionalInstitutesQuery = {
         to?: string | null,
       } | null,
       member?:  {
-        __typename: "ModelMemberProfInstituteConnection",
-        nextToken?: string | null,
+        __typename: "Member",
+        id: string,
+        nic: string,
+        fullName: string,
+        currentWorkplace: string,
+        designation: string,
+        profileSummary?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type ProfessionalInstitutesByMemberIdQueryVariables = {
+  memberId: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelProfessionalInstituteFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ProfessionalInstitutesByMemberIdQuery = {
+  professionalInstitutesByMemberId?:  {
+    __typename: "ModelProfessionalInstituteConnection",
+    items:  Array< {
+      __typename: "ProfessionalInstitute",
+      id: string,
+      memberId: string,
+      title?: string | null,
+      institute?: string | null,
+      duration?:  {
+        __typename: "ProfessionalInstituteDuration",
+        from?: string | null,
+        to?: string | null,
+      } | null,
+      member?:  {
+        __typename: "Member",
+        id: string,
+        nic: string,
+        fullName: string,
+        currentWorkplace: string,
+        designation: string,
+        profileSummary?: string | null,
+        createdAt: string,
+        updatedAt: string,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -1431,7 +1314,7 @@ export type GetMemberSpecializationQuery = {
         workplace?: string | null,
       } | null > | null,
       professionalInstitutes?:  {
-        __typename: "ModelMemberProfInstituteConnection",
+        __typename: "ModelProfessionalInstituteConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -1574,188 +1457,6 @@ export type MemberSpecializationsBySpecializationIdQuery = {
   } | null,
 };
 
-export type GetMemberProfInstituteQueryVariables = {
-  id: string,
-};
-
-export type GetMemberProfInstituteQuery = {
-  getMemberProfInstitute?:  {
-    __typename: "MemberProfInstitute",
-    id: string,
-    memberId: string,
-    professionalInstituteId: string,
-    member:  {
-      __typename: "Member",
-      id: string,
-      nic: string,
-      fullName: string,
-      currentWorkplace: string,
-      designation: string,
-      specialization?:  {
-        __typename: "ModelMemberSpecializationConnection",
-        nextToken?: string | null,
-      } | null,
-      profileSummary?: string | null,
-      contactDetails?:  {
-        __typename: "ContactDetails",
-      } | null,
-      previousWorkplaces?:  Array< {
-        __typename: "PreviousWorkplace",
-        workplace?: string | null,
-      } | null > | null,
-      professionalInstitutes?:  {
-        __typename: "ModelMemberProfInstituteConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    professionalInstitute:  {
-      __typename: "ProfessionalInstitute",
-      id: string,
-      title?: string | null,
-      institute?: string | null,
-      duration?:  {
-        __typename: "ProfessionalInstituteDuration",
-        from?: string | null,
-        to?: string | null,
-      } | null,
-      member?:  {
-        __typename: "ModelMemberProfInstituteConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type ListMemberProfInstitutesQueryVariables = {
-  filter?: ModelMemberProfInstituteFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListMemberProfInstitutesQuery = {
-  listMemberProfInstitutes?:  {
-    __typename: "ModelMemberProfInstituteConnection",
-    items:  Array< {
-      __typename: "MemberProfInstitute",
-      id: string,
-      memberId: string,
-      professionalInstituteId: string,
-      member:  {
-        __typename: "Member",
-        id: string,
-        nic: string,
-        fullName: string,
-        currentWorkplace: string,
-        designation: string,
-        profileSummary?: string | null,
-        createdAt: string,
-        updatedAt: string,
-      },
-      professionalInstitute:  {
-        __typename: "ProfessionalInstitute",
-        id: string,
-        title?: string | null,
-        institute?: string | null,
-        createdAt: string,
-        updatedAt: string,
-      },
-      createdAt: string,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type MemberProfInstitutesByMemberIdQueryVariables = {
-  memberId: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelMemberProfInstituteFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type MemberProfInstitutesByMemberIdQuery = {
-  memberProfInstitutesByMemberId?:  {
-    __typename: "ModelMemberProfInstituteConnection",
-    items:  Array< {
-      __typename: "MemberProfInstitute",
-      id: string,
-      memberId: string,
-      professionalInstituteId: string,
-      member:  {
-        __typename: "Member",
-        id: string,
-        nic: string,
-        fullName: string,
-        currentWorkplace: string,
-        designation: string,
-        profileSummary?: string | null,
-        createdAt: string,
-        updatedAt: string,
-      },
-      professionalInstitute:  {
-        __typename: "ProfessionalInstitute",
-        id: string,
-        title?: string | null,
-        institute?: string | null,
-        createdAt: string,
-        updatedAt: string,
-      },
-      createdAt: string,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type MemberProfInstitutesByProfessionalInstituteIdQueryVariables = {
-  professionalInstituteId: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelMemberProfInstituteFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type MemberProfInstitutesByProfessionalInstituteIdQuery = {
-  memberProfInstitutesByProfessionalInstituteId?:  {
-    __typename: "ModelMemberProfInstituteConnection",
-    items:  Array< {
-      __typename: "MemberProfInstitute",
-      id: string,
-      memberId: string,
-      professionalInstituteId: string,
-      member:  {
-        __typename: "Member",
-        id: string,
-        nic: string,
-        fullName: string,
-        currentWorkplace: string,
-        designation: string,
-        profileSummary?: string | null,
-        createdAt: string,
-        updatedAt: string,
-      },
-      professionalInstitute:  {
-        __typename: "ProfessionalInstitute",
-        id: string,
-        title?: string | null,
-        institute?: string | null,
-        createdAt: string,
-        updatedAt: string,
-      },
-      createdAt: string,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
 export type OnCreateMemberSubscriptionVariables = {
   filter?: ModelSubscriptionMemberFilterInput | null,
 };
@@ -1805,12 +1506,13 @@ export type OnCreateMemberSubscription = {
       } | null > | null,
     } | null > | null,
     professionalInstitutes?:  {
-      __typename: "ModelMemberProfInstituteConnection",
+      __typename: "ModelProfessionalInstituteConnection",
       items:  Array< {
-        __typename: "MemberProfInstitute",
+        __typename: "ProfessionalInstitute",
         id: string,
         memberId: string,
-        professionalInstituteId: string,
+        title?: string | null,
+        institute?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null >,
@@ -1870,12 +1572,13 @@ export type OnUpdateMemberSubscription = {
       } | null > | null,
     } | null > | null,
     professionalInstitutes?:  {
-      __typename: "ModelMemberProfInstituteConnection",
+      __typename: "ModelProfessionalInstituteConnection",
       items:  Array< {
-        __typename: "MemberProfInstitute",
+        __typename: "ProfessionalInstitute",
         id: string,
         memberId: string,
-        professionalInstituteId: string,
+        title?: string | null,
+        institute?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null >,
@@ -1935,12 +1638,13 @@ export type OnDeleteMemberSubscription = {
       } | null > | null,
     } | null > | null,
     professionalInstitutes?:  {
-      __typename: "ModelMemberProfInstituteConnection",
+      __typename: "ModelProfessionalInstituteConnection",
       items:  Array< {
-        __typename: "MemberProfInstitute",
+        __typename: "ProfessionalInstitute",
         id: string,
         memberId: string,
-        professionalInstituteId: string,
+        title?: string | null,
+        institute?: string | null,
         createdAt: string,
         updatedAt: string,
       } | null >,
@@ -2037,6 +1741,7 @@ export type OnCreateProfessionalInstituteSubscription = {
   onCreateProfessionalInstitute?:  {
     __typename: "ProfessionalInstitute",
     id: string,
+    memberId: string,
     title?: string | null,
     institute?: string | null,
     duration?:  {
@@ -2045,16 +1750,30 @@ export type OnCreateProfessionalInstituteSubscription = {
       to?: string | null,
     } | null,
     member?:  {
-      __typename: "ModelMemberProfInstituteConnection",
-      items:  Array< {
-        __typename: "MemberProfInstitute",
-        id: string,
-        memberId: string,
-        professionalInstituteId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
+      __typename: "Member",
+      id: string,
+      nic: string,
+      fullName: string,
+      currentWorkplace: string,
+      designation: string,
+      specialization?:  {
+        __typename: "ModelMemberSpecializationConnection",
+        nextToken?: string | null,
+      } | null,
+      profileSummary?: string | null,
+      contactDetails?:  {
+        __typename: "ContactDetails",
+      } | null,
+      previousWorkplaces?:  Array< {
+        __typename: "PreviousWorkplace",
+        workplace?: string | null,
+      } | null > | null,
+      professionalInstitutes?:  {
+        __typename: "ModelProfessionalInstituteConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -2069,6 +1788,7 @@ export type OnUpdateProfessionalInstituteSubscription = {
   onUpdateProfessionalInstitute?:  {
     __typename: "ProfessionalInstitute",
     id: string,
+    memberId: string,
     title?: string | null,
     institute?: string | null,
     duration?:  {
@@ -2077,16 +1797,30 @@ export type OnUpdateProfessionalInstituteSubscription = {
       to?: string | null,
     } | null,
     member?:  {
-      __typename: "ModelMemberProfInstituteConnection",
-      items:  Array< {
-        __typename: "MemberProfInstitute",
-        id: string,
-        memberId: string,
-        professionalInstituteId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
+      __typename: "Member",
+      id: string,
+      nic: string,
+      fullName: string,
+      currentWorkplace: string,
+      designation: string,
+      specialization?:  {
+        __typename: "ModelMemberSpecializationConnection",
+        nextToken?: string | null,
+      } | null,
+      profileSummary?: string | null,
+      contactDetails?:  {
+        __typename: "ContactDetails",
+      } | null,
+      previousWorkplaces?:  Array< {
+        __typename: "PreviousWorkplace",
+        workplace?: string | null,
+      } | null > | null,
+      professionalInstitutes?:  {
+        __typename: "ModelProfessionalInstituteConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -2101,6 +1835,7 @@ export type OnDeleteProfessionalInstituteSubscription = {
   onDeleteProfessionalInstitute?:  {
     __typename: "ProfessionalInstitute",
     id: string,
+    memberId: string,
     title?: string | null,
     institute?: string | null,
     duration?:  {
@@ -2109,16 +1844,30 @@ export type OnDeleteProfessionalInstituteSubscription = {
       to?: string | null,
     } | null,
     member?:  {
-      __typename: "ModelMemberProfInstituteConnection",
-      items:  Array< {
-        __typename: "MemberProfInstitute",
-        id: string,
-        memberId: string,
-        professionalInstituteId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
+      __typename: "Member",
+      id: string,
+      nic: string,
+      fullName: string,
+      currentWorkplace: string,
+      designation: string,
+      specialization?:  {
+        __typename: "ModelMemberSpecializationConnection",
+        nextToken?: string | null,
+      } | null,
+      profileSummary?: string | null,
+      contactDetails?:  {
+        __typename: "ContactDetails",
+      } | null,
+      previousWorkplaces?:  Array< {
+        __typename: "PreviousWorkplace",
+        workplace?: string | null,
+      } | null > | null,
+      professionalInstitutes?:  {
+        __typename: "ModelProfessionalInstituteConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -2155,7 +1904,7 @@ export type OnCreateMemberSpecializationSubscription = {
         workplace?: string | null,
       } | null > | null,
       professionalInstitutes?:  {
-        __typename: "ModelMemberProfInstituteConnection",
+        __typename: "ModelProfessionalInstituteConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -2207,7 +1956,7 @@ export type OnUpdateMemberSpecializationSubscription = {
         workplace?: string | null,
       } | null > | null,
       professionalInstitutes?:  {
-        __typename: "ModelMemberProfInstituteConnection",
+        __typename: "ModelProfessionalInstituteConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -2259,7 +2008,7 @@ export type OnDeleteMemberSpecializationSubscription = {
         workplace?: string | null,
       } | null > | null,
       professionalInstitutes?:  {
-        __typename: "ModelMemberProfInstituteConnection",
+        __typename: "ModelProfessionalInstituteConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -2271,180 +2020,6 @@ export type OnDeleteMemberSpecializationSubscription = {
       specialization?: string | null,
       member?:  {
         __typename: "ModelMemberSpecializationConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnCreateMemberProfInstituteSubscriptionVariables = {
-  filter?: ModelSubscriptionMemberProfInstituteFilterInput | null,
-};
-
-export type OnCreateMemberProfInstituteSubscription = {
-  onCreateMemberProfInstitute?:  {
-    __typename: "MemberProfInstitute",
-    id: string,
-    memberId: string,
-    professionalInstituteId: string,
-    member:  {
-      __typename: "Member",
-      id: string,
-      nic: string,
-      fullName: string,
-      currentWorkplace: string,
-      designation: string,
-      specialization?:  {
-        __typename: "ModelMemberSpecializationConnection",
-        nextToken?: string | null,
-      } | null,
-      profileSummary?: string | null,
-      contactDetails?:  {
-        __typename: "ContactDetails",
-      } | null,
-      previousWorkplaces?:  Array< {
-        __typename: "PreviousWorkplace",
-        workplace?: string | null,
-      } | null > | null,
-      professionalInstitutes?:  {
-        __typename: "ModelMemberProfInstituteConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    professionalInstitute:  {
-      __typename: "ProfessionalInstitute",
-      id: string,
-      title?: string | null,
-      institute?: string | null,
-      duration?:  {
-        __typename: "ProfessionalInstituteDuration",
-        from?: string | null,
-        to?: string | null,
-      } | null,
-      member?:  {
-        __typename: "ModelMemberProfInstituteConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnUpdateMemberProfInstituteSubscriptionVariables = {
-  filter?: ModelSubscriptionMemberProfInstituteFilterInput | null,
-};
-
-export type OnUpdateMemberProfInstituteSubscription = {
-  onUpdateMemberProfInstitute?:  {
-    __typename: "MemberProfInstitute",
-    id: string,
-    memberId: string,
-    professionalInstituteId: string,
-    member:  {
-      __typename: "Member",
-      id: string,
-      nic: string,
-      fullName: string,
-      currentWorkplace: string,
-      designation: string,
-      specialization?:  {
-        __typename: "ModelMemberSpecializationConnection",
-        nextToken?: string | null,
-      } | null,
-      profileSummary?: string | null,
-      contactDetails?:  {
-        __typename: "ContactDetails",
-      } | null,
-      previousWorkplaces?:  Array< {
-        __typename: "PreviousWorkplace",
-        workplace?: string | null,
-      } | null > | null,
-      professionalInstitutes?:  {
-        __typename: "ModelMemberProfInstituteConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    professionalInstitute:  {
-      __typename: "ProfessionalInstitute",
-      id: string,
-      title?: string | null,
-      institute?: string | null,
-      duration?:  {
-        __typename: "ProfessionalInstituteDuration",
-        from?: string | null,
-        to?: string | null,
-      } | null,
-      member?:  {
-        __typename: "ModelMemberProfInstituteConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnDeleteMemberProfInstituteSubscriptionVariables = {
-  filter?: ModelSubscriptionMemberProfInstituteFilterInput | null,
-};
-
-export type OnDeleteMemberProfInstituteSubscription = {
-  onDeleteMemberProfInstitute?:  {
-    __typename: "MemberProfInstitute",
-    id: string,
-    memberId: string,
-    professionalInstituteId: string,
-    member:  {
-      __typename: "Member",
-      id: string,
-      nic: string,
-      fullName: string,
-      currentWorkplace: string,
-      designation: string,
-      specialization?:  {
-        __typename: "ModelMemberSpecializationConnection",
-        nextToken?: string | null,
-      } | null,
-      profileSummary?: string | null,
-      contactDetails?:  {
-        __typename: "ContactDetails",
-      } | null,
-      previousWorkplaces?:  Array< {
-        __typename: "PreviousWorkplace",
-        workplace?: string | null,
-      } | null > | null,
-      professionalInstitutes?:  {
-        __typename: "ModelMemberProfInstituteConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    professionalInstitute:  {
-      __typename: "ProfessionalInstitute",
-      id: string,
-      title?: string | null,
-      institute?: string | null,
-      duration?:  {
-        __typename: "ProfessionalInstituteDuration",
-        from?: string | null,
-        to?: string | null,
-      } | null,
-      member?:  {
-        __typename: "ModelMemberProfInstituteConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
