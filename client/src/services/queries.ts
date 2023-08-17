@@ -29,7 +29,6 @@ export const simpleSearch = async (
     variables: getSimpleVariableFormat(searchCriteria, suggestion),
     authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
   });
-  console.log("memberData", memberData);
   return memberData.data.listMembers.items;
 };
 

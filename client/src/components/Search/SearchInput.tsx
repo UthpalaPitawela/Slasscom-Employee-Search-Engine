@@ -3,7 +3,6 @@ import {  Col, Row,Button } from "react-bootstrap";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 
 const SearchInput = (props: any) => {
-  console.log('props.isSearchResultsExist', props.isSearchResultsExist)
   return (
     <Row>
       <Col sm={11}>
