@@ -103,6 +103,60 @@ export const listMembers = /* GraphQL */ `
     }
   }
 `;
+
+
+export const listNameSuggestions = /* GraphQL */ `
+  query ListMembers(
+    $filter: ModelMemberFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listMembers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        fullName
+
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const listDesignationSuggestions = /* GraphQL */ `
+  query ListMembers(
+    $filter: ModelMemberFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listMembers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        designation
+
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const listCurrentWorkplaceSuggestions = /* GraphQL */ `
+  query ListMembers(
+    $filter: ModelMemberFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listMembers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        currentWorkplace
+
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+
 export const getSpecialization = /* GraphQL */ `
   query GetSpecialization($id: ID!) {
     getSpecialization(id: $id) {
@@ -152,6 +206,23 @@ export const listSpecializations = /* GraphQL */ `
         }
         createdAt
         updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+
+export const listSpecializationSuggestions = /* GraphQL */ `
+  query ListSpecializations(
+    $filter: ModelSpecializationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSpecializations(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        specialization
         __typename
       }
       nextToken
@@ -237,6 +308,26 @@ export const listProfessionalInstitutes = /* GraphQL */ `
         }
         createdAt
         updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const listProfessionalInstituteSuggestions = /* GraphQL */ `
+  query ListProfessionalInstitutes(
+    $filter: ModelProfessionalInstituteFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listProfessionalInstitutes(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        institute
         __typename
       }
       nextToken

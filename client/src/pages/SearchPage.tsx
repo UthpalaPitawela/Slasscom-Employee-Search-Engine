@@ -4,103 +4,105 @@ import SearchInput from "../components/Search/SearchInput";
 import SearchResultList from "../components/Search/SearchResultList ";
 import SearchCriteria from "../components/Search/SearchCriteria";
 import { MemberData } from "../types/memberDataType";
-import { searchByMemberName,searchBySpecialization , searchByInstitute} from "../services/queries";
+import {
+  searchBySpecialization,
+  searchByInstitute,
+  getFullnameSuggestions,
+  getDesignationSuggestions,
+  simpleSearch,
+  getCurrentWorkplaceSuggestions,
+  getSpecializationSuggestions,
+  getInstituteSuggestions,
+} from "../services/queries";
+import { SearchCriteriaContants } from "../constants/searchCriteria";
 
 const SearchPage = () => {
-  const [searchCriteria, setSearchCriteria] = useState("fullName")
+  const [searchCriteria, setSearchCriteria] = useState("fullName");
   const [searchQuery, setSearchQuery] = useState("");
-  const [members,setMembers] = useState([]);
-  const [suggestionList,setSuggestionList] = useState();
+  const [suggestionList, setSuggestionList] = useState();
   const [searchResults, setSearchResults] = useState<MemberData[]>();
-  const [selectedSuggestion, setSelectedSuggestion] = useState('')
+  const [selectedSuggestion, setSelectedSuggestion] = useState("");
 
   const handleSelectCriteria = (criteria: string) => {
-    setSearchCriteria(criteria)
+    setSelectedSuggestion("");
+    setSearchResults([]);
+    setSearchCriteria(criteria);
+  };
 
-  }
+  const handleInputChange = (data: any) => {
+    setSelectedSuggestion(data[searchCriteria]);
+  };
 
-  const handleInputChange =  (data: any) => { 
-    setSelectedSuggestion(data[searchCriteria]);    
-  }
-  
-  const filterSearchResultsForSuggestionSelection = () => {
-    if (selectedSuggestion) {
-      const results:any=  members?.filter((member: any) =>  {return member[searchCriteria] === selectedSuggestion})
-      console.log('results', results)
-      setSearchResults(results);
-    }     
-  }
+  const handleSearchSuggestions = (suggestions: any) => {
+    const uniqueSuggestions = [
+      ...new Set(suggestions.map((item: any) => item[searchCriteria])),
+    ];
+    const uniqueArray: any = uniqueSuggestions.map((value) => ({
+      [searchCriteria]: value,
+    }));
+    setSuggestionList(uniqueArray);
+  };
 
-  const handleSearchBySearchCriteria = (searchCriteria: string, searchQuery: string) => {
+  const handleSearchRecommendations = async (query: string) => {
+    setSearchQuery(query);
     switch (searchCriteria) {
-      case "fullName":
-      case "designation":
-      case "currentWorkplace":
-        return searchByMemberName(searchCriteria, searchQuery)
+      case SearchCriteriaContants.FULL_NAME: {
+        const nameSuggestions = await getFullnameSuggestions(searchQuery);
+        handleSearchSuggestions(nameSuggestions);
         break;
-      case "specialization":
-        return searchBySpecialization(searchCriteria,searchQuery)
+      }
+      case SearchCriteriaContants.DESIGNATION: {
+        const designationSuggestions = await getDesignationSuggestions(
+          searchQuery
+        );
+        handleSearchSuggestions(designationSuggestions);
         break;
-      case "institute":
-        return searchByInstitute(searchCriteria,searchQuery)
+      }
+      case SearchCriteriaContants.CURRENT_WORKPLACE: {
+        const workplaceSuggestions = await getCurrentWorkplaceSuggestions(
+          searchQuery
+        );
+        handleSearchSuggestions(workplaceSuggestions);
         break;
-      default:
-        console.log("Invalid choice.");
+      }
+      case SearchCriteriaContants.SPECIALIZATION: {
+        const specializationSuggestions = await getSpecializationSuggestions(
+          searchQuery
+        );
+        handleSearchSuggestions(specializationSuggestions);
         break;
+      }
+      case SearchCriteriaContants.PROFESSIONAL_INSTITUTE: {
+        const instituteSuggestions = await getInstituteSuggestions(searchQuery);
+        handleSearchSuggestions(instituteSuggestions);
+        break;
+      }
     }
-  }
+  };
 
-  const handleSearchSuggestions  = (memberData: any) => {
-    console.log('memberData', memberData)
-      setMembers(memberData);
-      const uniqueSuggestions = [...new Set(memberData.map((item: any) => item[searchCriteria]))];
-      const uniqueArray: any = uniqueSuggestions.map(value  => ({ [searchCriteria]: value  }));
-      setSuggestionList(uniqueArray)
-  }
-
-   const handleSimpleSearch= async () => {
-     try {
-      const memberData: any = await handleSearchBySearchCriteria(searchCriteria, searchQuery)
-      const memData:any= memberData?.data?.listMembers?.items;
-      handleSearchSuggestions(memData);     
-     } catch(error: any) {
-      console.log('error fetching members', error)
-     }
-   }
-
-   const handleSearchBySpecialization = async () => {
-    try {
-     const memberData: any = await handleSearchBySearchCriteria(searchCriteria, searchQuery)
-     const memData:any= memberData?.data?.listSpecializations?.items;
-     handleSearchSuggestions(memData);
-    } catch(error: any) {
-      console.log('error fetching members', error)
+  const handleSearch = async () => {
+    switch (searchCriteria) {
+      case SearchCriteriaContants.FULL_NAME:
+      case SearchCriteriaContants.DESIGNATION:
+      case SearchCriteriaContants.CURRENT_WORKPLACE: {
+        const results = await simpleSearch(searchCriteria, selectedSuggestion);
+        setSearchResults(results);
+        break;
+      }
+      case SearchCriteriaContants.SPECIALIZATION: {
+        const specializationResults = await searchBySpecialization(
+          selectedSuggestion
+        );
+        setSearchResults(specializationResults);
+        break;
+      }
+      case SearchCriteriaContants.PROFESSIONAL_INSTITUTE: {
+        const instituteResults = await searchByInstitute(selectedSuggestion);
+        setSearchResults(instituteResults);
+        break;
+      }
     }
-  }
-
-
-
-  const handleSearchByInstitute = async() => {
-    try {
-      const memberData: any = await handleSearchBySearchCriteria(searchCriteria, searchQuery)
-      const memData:any= memberData?.data?.listProfessionalInstitutes?.items;
-      handleSearchSuggestions(memData);
-     } catch(error: any) {
-       console.log('error fetching members', error)
-     }
-  }
-
-
-  const handleSearchForSugggestions = async (query: string) => {
-    setSearchQuery(query)
-    if (searchCriteria === 'fullName' || searchCriteria === 'designation' || searchCriteria === 'currentWorkplace') {
-      handleSimpleSearch();
-    } else if (searchCriteria === 'specialization') {
-      handleSearchBySpecialization();
-    } else if (searchCriteria === 'institute') {
-      handleSearchByInstitute();
-    }
-  }
+  };
 
   return (
     <Container className="mt-5">
@@ -122,9 +124,10 @@ const SearchPage = () => {
           <Container className="mt-5">
             <Col sm={2}></Col>
             <Col sm={8}>
-             <SearchCriteria 
-             handleSelectCriteria={handleSelectCriteria} 
-             searchCriteria={searchCriteria}/>
+              <SearchCriteria
+                handleSelectCriteria={handleSelectCriteria}
+                searchCriteria={searchCriteria}
+              />
             </Col>
           </Container>
         </Col>
@@ -139,20 +142,23 @@ const SearchPage = () => {
               <SearchInput
                 handleInputChange={handleInputChange}
                 suggestionList={suggestionList}
-                handleSearchForSugggestions={handleSearchForSugggestions}
+                handleSearchRecommendations={handleSearchRecommendations}
                 searchCriteria={searchCriteria}
-                filterSearchResultsForSuggestionSelection={filterSearchResultsForSuggestionSelection}
+                handleSearch={handleSearch}
+                viewLoader={selectedSuggestion && !searchResults}
               />
             </Col>
           </Container>
         </Col>
       </Row>
       <Row>
-
         <Col md={12}>
           <Container className="mt-4">
             <Col sm={12}>
-              <SearchResultList searchResults={searchResults} searchCriteria={searchCriteria} />
+              <SearchResultList
+                searchResults={searchResults}
+                searchCriteria={searchCriteria}
+              />
             </Col>
           </Container>
         </Col>

@@ -3,6 +3,7 @@ import {  Col, Row,Button } from "react-bootstrap";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 
 const SearchInput = (props: any) => {
+  console.log('props.isSearchResultsExist', props.isSearchResultsExist)
   return (
     <Row>
       <Col sm={11}>
@@ -10,8 +11,8 @@ const SearchInput = (props: any) => {
         <AsyncTypeahead
           id="autocomplete-input"
           labelKey={(option: any) => (option[props.searchCriteria] ? option[props.searchCriteria] : '')} 
-          isLoading={false}
-          onSearch={props.handleSearchForSugggestions}
+          isLoading={props.viewLoader}
+          onSearch={props.handleSearchRecommendations}
           options={props.suggestionList}
           placeholder="Search"
           onChange={(selected) => {
@@ -22,7 +23,7 @@ const SearchInput = (props: any) => {
         />
       </Col>
       <Col sm={1}>
-        <Button variant="primary" onClick={() => props.filterSearchResultsForSuggestionSelection()}>
+        <Button variant="primary" onClick={() => props.handleSearch()}>
           Search
         </Button>
       </Col>
