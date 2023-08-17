@@ -2,8 +2,6 @@ import * as queries from '../graphql/queries';
 import { GraphQLQuery, GRAPHQL_AUTH_MODE  } from '@aws-amplify/api';
 import { GetMemberQuery, ListMembersQuery, ListProfessionalInstitutesQuery, ListSpecializationsQuery } from "../API";
 import { getMemberByIdVariableFormat, getSimpleVariableFormat, getSpecializationVariableFormat,getInstitueVariableFormat } from './queryVariables';
-// import { ListMembersQuery, ListMembersQueryVariables } from "../API";
-// import { MemberData } from "../types/memberDataType";
 import { API, Amplify} from "aws-amplify";
 import { getAwsConfig } from "../utils/getAwsConfig";
 
@@ -30,8 +28,6 @@ export const searchBySpecialization = async (searchCriteria: string, searchQuery
     return memberData;
 }
 export const searchByInstitute = async (searchCriteria: string, searchQuery: string) => {
-  console.log('searchQuery=====================', searchQuery)
-  console.log('searchCriteria====================', searchCriteria)
     const memberData: any = await API.graphql<GraphQLQuery<ListProfessionalInstitutesQuery>>(
       { 
         query: queries.listProfessionalInstitutes,
@@ -39,7 +35,6 @@ export const searchByInstitute = async (searchCriteria: string, searchQuery: str
         authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
       }
       );
-      console.log('memberData', memberData)
     return memberData;
 }
 export const getMemberById = async (memberId: string) => {

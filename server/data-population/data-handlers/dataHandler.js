@@ -21,7 +21,6 @@ module.exports.handleSpecializationData = async (memberData) => {
           updatedAt: new Date(),
         })
         );
-        console.log('specializationObjects', specializationObjects)
   if (specializationObjects  && specializationObjects.length>0) {
       await addBulkData(SpecializationTable, specializationObjects);
 
