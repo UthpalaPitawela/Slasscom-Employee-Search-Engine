@@ -1,0 +1,67 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+# input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+
+type Member @model @auth(rules: [{ allow: groups, groups: ["us-west-1_v0aFDJrPf_SlasscomIdpWso2", "us-west-1_v0aFDJrPf_SlasscomIdp99x"] }]) {
+  id: ID!
+  nic: String!
+  fullName: String!
+  currentWorkplace: String!
+  designation: String!
+  specialization: [Specialization] @manyToMany (relationName: "MemberSpecialization")
+  profileSummary: String
+  contactDetails: ContactDetails
+  previousWorkplaces: [PreviousWorkplace]
+  professionalInstitutes: [ProfessionalInstitute]  @hasMany(indexName: "byProfInstitute", fields: ["id"])
+}
+
+type Specialization @model @auth(rules: [{ allow: groups, groups: ["us-west-1_v0aFDJrPf_SlasscomIdpWso2", "us-west-1_v0aFDJrPf_SlasscomIdp99x"] }]){
+  id: ID!
+  specialization: String
+  member: [Member] @manyToMany (relationName: "MemberSpecialization")
+}
+
+type ContactDetails {
+  personal: PersonalContact
+  official: OfficialContact
+}
+
+type PersonalContact {
+  mobile: String
+  email: String
+}
+
+type OfficialContact {
+  mobile: String
+  email: String
+}
+
+type PreviousWorkplace  {
+  workplace: String
+  designations: [Designation]
+}
+
+type Designation {
+  designation: String
+  from: String
+  to: String
+}
+
+type ProfessionalInstitute @model @auth(rules: [{ allow: groups, groups: ["us-west-1_v0aFDJrPf_SlasscomIdpWso2", "us-west-1_v0aFDJrPf_SlasscomIdp99x"] }]) {
+  id: ID!
+  memberId: ID! @index(name: "byProfInstitute")
+  title: String
+  institute: String
+  duration: ProfessionalInstituteDuration
+  member: Member  @belongsTo(fields: ["memberId"])
+}
+
+type ProfessionalInstituteDuration {
+  from: String
+  to: String
+}
+

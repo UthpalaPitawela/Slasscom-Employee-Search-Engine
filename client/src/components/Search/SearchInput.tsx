@@ -1,5 +1,5 @@
 
-import {  Col, Row } from "react-bootstrap";
+import {  Col, Row,Button } from "react-bootstrap";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 
 const SearchInput = (props: any) => {
@@ -11,7 +11,7 @@ const SearchInput = (props: any) => {
           id="autocomplete-input"
           labelKey={(option: any) => (option[props.searchCriteria] ? option[props.searchCriteria] : '')} 
           isLoading={false}
-          onSearch={props.handleSearch}
+          onSearch={props.handleSearchRecommendations}
           options={props.suggestionList}
           placeholder="Search"
           onChange={(selected) => {
@@ -19,17 +19,15 @@ const SearchInput = (props: any) => {
               props.handleInputChange(selected[0]);
             }
           }}
+          onKeyDown={props.handleKeyPress}
         />
       </Col>
       <Col sm={1}>
-        {/* <Button variant="primary" onClick={() => props.handleSearch()}>
+        <Button variant="primary" onClick={() => props.handleSearch()}>
           Search
-        </Button> */}
-        {/* </Form> */}
+        </Button>
       </Col>
     </Row>
-
-    // </Container>
   );
 };
 

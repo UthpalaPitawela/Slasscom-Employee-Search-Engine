@@ -1,12 +1,12 @@
 {
-  "projectName": "slasscomEmp",
+  "projectName": "slasscomMem",
   "version": "3.1",
   "frontend": "javascript",
   "javascript": {
     "framework": "react",
     "config": {
-      "SourceDir": "src",
-      "DistributionDir": "build",
+      "SourceDir": "client/src",
+      "DistributionDir": "client/build",
       "BuildCommand": "npm.cmd run-script build",
       "StartCommand": "npm.cmd run-script start"
     }

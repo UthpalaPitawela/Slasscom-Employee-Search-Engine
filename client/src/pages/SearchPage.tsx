@@ -3,66 +3,106 @@ import { Container, Col, Row } from "react-bootstrap";
 import SearchInput from "../components/Search/SearchInput";
 import SearchResultList from "../components/Search/SearchResultList ";
 import SearchCriteria from "../components/Search/SearchCriteria";
-// import { listMembers} from '../graphql/queries'
-import { getAwsConfig } from "../utils/getAwsConfig";
-
-
-import { API, Amplify} from "aws-amplify";
-import * as queries from '../graphql/queries';
-import { GraphQLQuery, GRAPHQL_AUTH_MODE  } from '@aws-amplify/api';
-import { ListMembersQuery, ListMembersQueryVariables } from "../API";
 import { MemberData } from "../types/memberDataType";
-
-
-// import {Row} from 'react-bootstrap'
-Amplify.configure(getAwsConfig());
+import {
+  searchBySpecialization,
+  searchByInstitute,
+  getFullnameSuggestions,
+  getDesignationSuggestions,
+  simpleSearch,
+  getCurrentWorkplaceSuggestions,
+  getSpecializationSuggestions,
+  getInstituteSuggestions,
+} from "../services/queries";
+import { SearchCriteriaContants } from "../constants/searchCriteria";
 
 const SearchPage = () => {
-  const [searchCriteria, setSearchCriteria] = useState("name")
+  const [searchCriteria, setSearchCriteria] = useState("fullName");
   const [searchQuery, setSearchQuery] = useState("");
-  const [members,setMembers] = useState([]);
-  const [suggestionList,setSuggestionList] = useState();
+  const [suggestionList, setSuggestionList] = useState();
   const [searchResults, setSearchResults] = useState<MemberData[]>();
+  const [selectedSuggestion, setSelectedSuggestion] = useState("");
 
   const handleSelectCriteria = (criteria: string) => {
-    setSearchCriteria(criteria)
-
-  }
-
-  const handleInputChange =  (data: any) => {
-    const results:MemberData[]=  members?.filter((member: any) =>  {return member[searchCriteria] === data[searchCriteria]})
-    setSearchResults(results);
-  }
-
-  const variables: ListMembersQueryVariables = {
-    filter: {
-      [searchCriteria]: {
-        contains: searchQuery 
-      }
-    },
-
+    setSelectedSuggestion("");
+    setSearchResults([]);
+    setSearchCriteria(criteria);
   };
 
-  const handleSearch = async (query: string) => {
-    setSearchQuery(query)
-    try {
-      const memberData = await API.graphql<GraphQLQuery<ListMembersQuery>>(
-        { 
-          query: queries.listMembers,
-          variables: variables,
-          authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
-        }
-        );
-      if (memberData && memberData.data && memberData.data.listMembers && memberData.data.listMembers.items) {
-        const memData:any= memberData?.data?.listMembers?.items;
-        setMembers(memData);
-        const uniqueSuggestions = [...new Set(memData.map((item: any) => item[searchCriteria]))];
-        const uniqueArray: any = uniqueSuggestions.map(value  => ({ [searchCriteria]: value  }));
-        setSuggestionList(uniqueArray)
+  const handleInputChange = (data: any) => {
+    setSelectedSuggestion(data[searchCriteria]);
+  };
 
+  const handleSearchSuggestions = (suggestions: any) => {
+    const uniqueSuggestions = [
+      ...new Set(suggestions.map((item: any) => item[searchCriteria])),
+    ];
+    const uniqueArray: any = uniqueSuggestions.map((value) => ({
+      [searchCriteria]: value,
+    }));
+    setSuggestionList(uniqueArray);
+  };
+
+  const handleSearchRecommendations = async (query: string) => {
+    setSearchQuery(query);
+    switch (searchCriteria) {
+      case SearchCriteriaContants.FULL_NAME: {
+        const nameSuggestions = await getFullnameSuggestions(searchQuery);
+        handleSearchSuggestions(nameSuggestions);
+        break;
       }
-    }catch (err) { console.log('error fetching members', err) }
-  }
+      case SearchCriteriaContants.DESIGNATION: {
+        const designationSuggestions = await getDesignationSuggestions(
+          searchQuery
+        );
+        handleSearchSuggestions(designationSuggestions);
+        break;
+      }
+      case SearchCriteriaContants.CURRENT_WORKPLACE: {
+        const workplaceSuggestions = await getCurrentWorkplaceSuggestions(
+          searchQuery
+        );
+        handleSearchSuggestions(workplaceSuggestions);
+        break;
+      }
+      case SearchCriteriaContants.SPECIALIZATION: {
+        const specializationSuggestions = await getSpecializationSuggestions(
+          searchQuery
+        );
+        handleSearchSuggestions(specializationSuggestions);
+        break;
+      }
+      case SearchCriteriaContants.PROFESSIONAL_INSTITUTE: {
+        const instituteSuggestions = await getInstituteSuggestions(searchQuery);
+        handleSearchSuggestions(instituteSuggestions);
+        break;
+      }
+    }
+  };
+
+  const handleSearch = async () => {
+    switch (searchCriteria) {
+      case SearchCriteriaContants.FULL_NAME:
+      case SearchCriteriaContants.DESIGNATION:
+      case SearchCriteriaContants.CURRENT_WORKPLACE: {
+        const results = await simpleSearch(searchCriteria, selectedSuggestion);
+        setSearchResults(results);
+        break;
+      }
+      case SearchCriteriaContants.SPECIALIZATION: {
+        const specializationResults = await searchBySpecialization(
+          selectedSuggestion
+        );
+        setSearchResults(specializationResults);
+        break;
+      }
+      case SearchCriteriaContants.PROFESSIONAL_INSTITUTE: {
+        const instituteResults = await searchByInstitute(selectedSuggestion);
+        setSearchResults(instituteResults);
+        break;
+      }
+    }
+  };
 
   return (
     <Container className="mt-5">
@@ -70,7 +110,7 @@ const SearchPage = () => {
       <Row>
         <Col md={2}></Col>
         <Col>
-          <h1>Slasscom Employee Search</h1>
+          <h1>SLASSCOM Employee Search</h1>
         </Col>
       </Row>
       <Row>
@@ -84,9 +124,10 @@ const SearchPage = () => {
           <Container className="mt-5">
             <Col sm={2}></Col>
             <Col sm={8}>
-             <SearchCriteria 
-             handleSelectCriteria={handleSelectCriteria} 
-             searchCriteria={searchCriteria}/>
+              <SearchCriteria
+                handleSelectCriteria={handleSelectCriteria}
+                searchCriteria={searchCriteria}
+              />
             </Col>
           </Container>
         </Col>
@@ -99,22 +140,25 @@ const SearchPage = () => {
             <Col sm={9}>
               {" "}
               <SearchInput
-                // searchQuery={searchQuery}
                 handleInputChange={handleInputChange}
                 suggestionList={suggestionList}
-                handleSearch={handleSearch}
+                handleSearchRecommendations={handleSearchRecommendations}
                 searchCriteria={searchCriteria}
+                handleSearch={handleSearch}
+                handleKeyPress={handleSearch}
               />
             </Col>
           </Container>
         </Col>
       </Row>
       <Row>
-
         <Col md={12}>
           <Container className="mt-4">
             <Col sm={12}>
-              <SearchResultList searchResults={searchResults}  />
+              <SearchResultList
+                searchResults={searchResults}
+                searchCriteria={searchCriteria}
+              />
             </Col>
           </Container>
         </Col>
