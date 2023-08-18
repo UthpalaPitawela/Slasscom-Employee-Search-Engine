@@ -1,12 +1,13 @@
 import { ButtonToolbar, Button } from "react-bootstrap";
+import { SearchCriteriaContants } from "../../constants/searchCriteria";
 
 const SearchCriteria = (props: any) => {
   const buttons = [
-    { value: "fullName", text: "Name" },
-    { value: "specialization", text: "Specialization" },
-    { value: "designation", text: "Designation" },
-    { value: "currentWorkplace", text: "Current Workplace" },
-    { value: "institute", text: "Institute" },
+    { value: SearchCriteriaContants.FULL_NAME, text: "Name" },
+    { value: SearchCriteriaContants.SPECIALIZATION, text: "Specialization" },
+    { value: SearchCriteriaContants.DESIGNATION, text: "Designation" },
+    { value: SearchCriteriaContants.CURRENT_WORKPLACE, text: "Current Workplace" },
+    { value: SearchCriteriaContants.PROFESSIONAL_INSTITUTE, text: "Institute" },
   ];
 
   const handleButtonClick = (buttonValue: string) => {

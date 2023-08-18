@@ -11,7 +11,7 @@ const SearchInput = (props: any) => {
           id="autocomplete-input"
           labelKey={(option: any) => (option[props.searchCriteria] ? option[props.searchCriteria] : '')} 
           isLoading={false}
-          onSearch={props.handleSearchForSugggestions}
+          onSearch={props.handleSearchRecommendations}
           options={props.suggestionList}
           placeholder="Search"
           onChange={(selected) => {
@@ -22,7 +22,7 @@ const SearchInput = (props: any) => {
         />
       </Col>
       <Col sm={1}>
-        <Button variant="primary" onClick={() => props.filterSearchResultsForSuggestionSelection()}>
+        <Button variant="primary" onClick={() => props.handleSearch()}>
           Search
         </Button>
       </Col>
