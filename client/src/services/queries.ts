@@ -34,29 +34,29 @@ export const simpleSearch = async (
 
 export const searchBySpecialization = async (suggestion: string) => {
   const memberData: any = await API.graphql<
-    GraphQLQuery<ListSpecializationsQuery>
+  GraphQLQuery<ListSpecializationsQuery>
   >({
     query: queries.listSpecializations,
     variables: getSpecializationVariableFormat(suggestion),
     authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
   });
-  return memberData.data.listSpecializations.items[0].member.items;
+  return memberData?.data?.listSpecializations?.items[0]?.member?.items || [];
 };
 
 export const searchByInstitute = async (suggestion: string) => {
   const memberData: any = await API.graphql<
-    GraphQLQuery<ListProfessionalInstitutesQuery>
+  GraphQLQuery<ListProfessionalInstitutesQuery>
   >({
     query: queries.listProfessionalInstitutes,
     variables: getInstitueVariableFormat(suggestion),
     authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
   });
-  return memberData.data.listProfessionalInstitutes.items;
+  return memberData?.data?.listProfessionalInstitutes?.items || [];
 };
 
 export const getDesignationSuggestions = async (searchQuery: string) => {
   const designationSuggestions: any = await API.graphql<
-    GraphQLQuery<ListMembersQuery>
+  GraphQLQuery<ListMembersQuery>
   >({
     query: queries.listDesignationSuggestions,
     variables: getDesignationSuggestionVariableFormat(searchQuery),
@@ -67,7 +67,7 @@ export const getDesignationSuggestions = async (searchQuery: string) => {
 
 export const getFullnameSuggestions = async (searchQuery: string) => {
   const fullNameSuggestions: any = await API.graphql<
-    GraphQLQuery<ListMembersQuery>
+  GraphQLQuery<ListMembersQuery>
   >({
     query: queries.listNameSuggestions,
     variables: getNameSuggestionVariableFormat(searchQuery),
@@ -78,7 +78,7 @@ export const getFullnameSuggestions = async (searchQuery: string) => {
 
 export const getCurrentWorkplaceSuggestions = async (searchQuery: string) => {
   const workplaceSuggestions: any = await API.graphql<
-    GraphQLQuery<ListMembersQuery>
+  GraphQLQuery<ListMembersQuery>
   >({
     query: queries.listCurrentWorkplaceSuggestions,
     variables: getCurrentWorkplaceSuggestionVariableFormat(searchQuery),
@@ -88,7 +88,7 @@ export const getCurrentWorkplaceSuggestions = async (searchQuery: string) => {
 };
 export const getSpecializationSuggestions = async (searchQuery: string) => {
   const specializationSuggestions: any = await API.graphql<
-    GraphQLQuery<ListMembersQuery>
+  GraphQLQuery<ListMembersQuery>
   >({
     query: queries.listSpecializationSuggestions,
     variables: getSpecializationSuggestionVariableFormat(searchQuery),
@@ -98,7 +98,7 @@ export const getSpecializationSuggestions = async (searchQuery: string) => {
 };
 export const getInstituteSuggestions = async (searchQuery: string) => {
   const instituteSuggestions: any = await API.graphql<
-    GraphQLQuery<ListMembersQuery>
+  GraphQLQuery<ListMembersQuery>
   >({
     query: queries.listProfessionalInstituteSuggestions,
     variables: getInstituteSuggestionVariableFormat(searchQuery),

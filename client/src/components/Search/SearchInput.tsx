@@ -10,7 +10,7 @@ const SearchInput = (props: any) => {
         <AsyncTypeahead
           id="autocomplete-input"
           labelKey={(option: any) => (option[props.searchCriteria] ? option[props.searchCriteria] : '')} 
-          isLoading={props.viewLoader}
+          isLoading={false}
           onSearch={props.handleSearchRecommendations}
           options={props.suggestionList}
           placeholder="Search"

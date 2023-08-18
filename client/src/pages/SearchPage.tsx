@@ -145,7 +145,6 @@ const SearchPage = () => {
                 handleSearchRecommendations={handleSearchRecommendations}
                 searchCriteria={searchCriteria}
                 handleSearch={handleSearch}
-                viewLoader={selectedSuggestion && !searchResults}
               />
             </Col>
           </Container>
