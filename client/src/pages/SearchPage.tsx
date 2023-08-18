@@ -145,6 +145,7 @@ const SearchPage = () => {
                 handleSearchRecommendations={handleSearchRecommendations}
                 searchCriteria={searchCriteria}
                 handleSearch={handleSearch}
+                handleKeyPress={handleSearch}
               />
             </Col>
           </Container>
