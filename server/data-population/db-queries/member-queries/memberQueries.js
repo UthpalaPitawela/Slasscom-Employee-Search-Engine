@@ -16,7 +16,8 @@ module.exports.insertDataIntoDynamoDB = async (data) => {
 const insertMemberIntoTable = async (employeeData) => {
   const {memberDataWithoutId, specialization, professionalInstitutes} = extractMemberDataWithoutId(employeeData);
   const memberData = createMemberData(memberDataWithoutId);
-  await savedb(MemberTable, memberData);
+  const validatedMemberData = getMemberDataValidated.validate(memberData);
+  await savedb(MemberTable, validatedMemberData);
 
   const specializationPromises = specialization.map((specializedItem) =>
     insertSpecializationTable(memberData.id, specializedItem)

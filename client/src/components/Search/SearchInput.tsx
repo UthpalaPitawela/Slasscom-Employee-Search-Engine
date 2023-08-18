@@ -19,6 +19,7 @@ const SearchInput = (props: any) => {
               props.handleInputChange(selected[0]);
             }
           }}
+          onKeyDown={props.handleKeyPress}
         />
       </Col>
       <Col sm={1}>
